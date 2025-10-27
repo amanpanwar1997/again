@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+  
+  <!-- PWA Primary Meta Tags -->
+  <title>Inchtomilez - Digital Marketing and Advertising Agency</title>
+  <meta name="title" content="Inchtomilez - Digital Marketing and Advertising Agency">
+  <meta name="description" content="Leading digital marketing and advertising agency providing comprehensive solutions for your brand growth. Expert services in SEO, social media, branding, and more.">
+  <meta name="keywords" content="digital marketing, advertising agency, SEO, social media marketing, branding, Indore">
+  <meta name="author" content="Inchtomilez">
+  <meta name="robots" content="index, follow">
+  
+  <!-- PWA Manifest -->
+  <link rel="manifest" href="/manifest.json">
+  
+  <!-- Theme Color -->
+  <meta name="theme-color" content="#000000">
+  <meta name="msapplication-TileColor" content="#000000">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  
+  <!-- Apple Touch Icons -->
+  <link rel="apple-touch-icon" sizes="72x72" href="/icons/icon-72x72.png">
+  <link rel="apple-touch-icon" sizes="96x96" href="/icons/icon-96x96.png">
+  <link rel="apple-touch-icon" sizes="128x128" href="/icons/icon-128x128.png">
+  <link rel="apple-touch-icon" sizes="144x144" href="/icons/icon-144x144.png">
+  <link rel="apple-touch-icon" sizes="152x152" href="/icons/icon-152x152.png">
+  <link rel="apple-touch-icon" sizes="192x192" href="/icons/icon-192x192.png">
+  
+  <!-- Apple Mobile Web App -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="Inchtomilez">
+  
+  <!-- Microsoft Tiles -->
+  <meta name="msapplication-TileImage" content="/icons/icon-144x144.png">
+  <meta name="msapplication-config" content="/browserconfig.xml">
+  
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" sizes="32x32" href="/icons/icon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/icons/icon-16x16.png">
+  <link rel="shortcut icon" href="/favicon.ico">
+  
+  <!-- Security Headers (Meta Tags) -->
+  <!-- Note: X-Frame-Options removed to allow Figma iframe preview -->
+  <!-- Note: upgrade-insecure-requests removed to prevent protocol errors in preview -->
+  <meta http-equiv="X-Content-Type-Options" content="nosniff">
+  <meta http-equiv="X-XSS-Protection" content="1; mode=block">
+  <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin">
+  <meta http-equiv="Permissions-Policy" content="geolocation=(self), microphone=(), camera=(), payment=()"
+  
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://www.inchtomilez.com/">
+  <meta property="og:title" content="Inchtomilez - Digital Marketing and Advertising Agency">
+  <meta property="og:description" content="Leading digital marketing and advertising agency providing comprehensive solutions for your brand growth.">
+  <meta property="og:image" content="/icons/icon-512x512.png">
+  
+  <!-- Twitter -->
+  <meta property="twitter:card" content="summary_large_image">
+  <meta property="twitter:url" content="https://www.inchtomilez.com/">
+  <meta property="twitter:title" content="Inchtomilez - Digital Marketing and Advertising Agency">
+  <meta property="twitter:description" content="Leading digital marketing and advertising agency providing comprehensive solutions for your brand growth.">
+  <meta property="twitter:image" content="/icons/icon-512x512.png">
+  
+  <!-- Resource Hints for Performance -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="dns-prefetch" href="https://www.googletagmanager.com">
+  <link rel="dns-prefetch" href="https://www.google-analytics.com">
+  <link rel="dns-prefetch" href="https://wa.me">
+  <link rel="dns-prefetch" href="https://drive.google.com">
+  <link rel="preconnect" href="https://inchtomilez.com">
+  
+  <!-- Preload Critical Assets -->
+  <link rel="preload" href="/manifest.json" as="fetch" crossorigin="anonymous">
+  <link rel="preload" href="https://fonts.googleapis.com/css2?family=Raleway:wght@100;200;300;400;500;600;700;800;900&display=swap" as="style">
+  
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  
+  <!-- Canonical URL -->
+  <link rel="canonical" href="https://www.inchtomilez.com/">
+  
+  <!-- RSS Feed -->
+  <link rel="alternate" type="application/rss+xml" title="Inchtomilez Blog RSS Feed" href="/blog-rss.xml">
+</head>
+<body>
+  <div id="root"></div>
+  <script type="module" src="/src/main.tsx"></script>
+  
+  <!-- Service Worker Registration -->
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/service-worker.js')
+          .then(registration => console.log('✅ SW registered:', registration.scope))
+          .catch(err => console.error('❌ SW registration failed:', err));
+      });
+    }
+  </script>
+</body>
+</html>

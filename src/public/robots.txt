@@ -1,0 +1,37 @@
+# InchtoMilez - Robots.txt
+# https://www.inchtomilez.com/robots.txt
+
+User-agent: *
+Allow: /
+
+# Disallow admin and private areas
+Disallow: /admin/
+Disallow: /private/
+Disallow: /_next/
+Disallow: /api/
+
+# Allow important directories
+Allow: /services/
+Allow: /industries/
+Allow: /blogs/
+
+# Crawl rate
+Crawl-delay: 0
+
+# Sitemap location
+Sitemap: https://www.inchtomilez.com/sitemap.xml
+
+# Google-specific
+User-agent: Googlebot
+Allow: /
+Crawl-delay: 0
+
+# Bing-specific
+User-agent: Bingbot
+Allow: /
+Crawl-delay: 0
+
+# Yandex-specific
+User-agent: Yandex
+Allow: /
+Crawl-delay: 0
