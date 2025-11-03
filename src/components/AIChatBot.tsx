@@ -1,10 +1,5 @@
-import { useState, useRef, useEffect } from 'react';
-import { X, Send, Minimize2, Maximize2, Bot, User, CheckCircle, Clock, Sparkles } from 'lucide-react';
-import { Button } from './ui/button';
-import { Input } from './ui/input';
-import { Badge } from './ui/badge';
-import { submitLeadWithRetry } from '../utils/googleSheetsIntegration';
-import { chatbotAPI } from '../utils/supabase/client';
+import { useState, useEffect, useRef } from 'react';
+import { Bot, X, Minimize2, Maximize2, User, Send } from 'lucide-react';
 
 interface Message {
   id: string;
@@ -14,79 +9,27 @@ interface Message {
   suggestions?: string[];
 }
 
-interface LeadData {
-  name: string;
-  phone: string;
-  service: string;
-  city: string;
-  email: string;
-  budget: string;
-  timestamp: Date;
-  conversationHistory: string[];
-}
+type ConversationStage = 'ask_name' | 'ask_phone' | 'completed';
 
-interface AIChatBotProps {
+interface AIChatbotProps {
   isOpen: boolean;
   onClose: () => void;
 }
 
-type ConversationStage = 'ask_name' | 'ask_phone' | 'ask_service' | 'ask_city' | 'ask_email' | 'ask_budget' | 'consultation_booking' | 'completed';
-
-// 16 Services offered by Inchtomilez
-const SERVICES = [
-  'Digital Marketing',
-  'Advertising',
-  'E-Commerce Marketing',
-  'Branding',
-  'Media Production',
-  'Animation',
-  'Graphic Designing',
-  'OOH Services',
-  'Print Media',
-  'Software Development',
-  'Application Development',
-  'Website Development',
-  'Political Campaigns',
-  'Corporate Gifting',
-  'Influencer Marketing',
-  'Public Relations'
-];
-
-// Budget ranges
-const BUDGETS = [
-  'Under ₹25,000',
-  '₹25,000 - ₹50,000',
-  '₹50,000 - ₹1,00,000',
-  '₹1,00,000 - ₹2,00,000',
-  'Above ₹2,00,000',
-  'Not sure yet'
-];
-
-// Consultation booking options
-const CONSULTATION_OPTIONS = [
-  '📞 Call me within 1 hour',
-  '📅 Schedule for tomorrow',
-  '📅 Schedule for this week',
-  '📧 Send email with details',
-  '💬 Continue on WhatsApp'
-];
-
-const AIChatBot = ({ isOpen, onClose }: AIChatBotProps) => {
+export function AIChatbot({ isOpen, onClose }: AIChatbotProps) {
   const [messages, setMessages] = useState<Message[]>([]);
   const [inputValue, setInputValue] = useState('');
   const [isMinimized, setIsMinimized] = useState(false);
   const [conversationStage, setConversationStage] = useState<ConversationStage>('ask_name');
   const [isTyping, setIsTyping] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
+  const [leadName, setLeadName] = useState('');
+  const [leadPhone, setLeadPhone] = useState('');
+  
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
-  
-  // Lead data storage
-  const [leadData, setLeadData] = useState<Partial<LeadData>>({
-    timestamp: new Date(),
-    conversationHistory: []
-  });
 
-  // Auto-scroll to bottom
+  // Auto-scroll to bottom when new messages arrive
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
@@ -95,447 +38,434 @@ const AIChatBot = ({ isOpen, onClose }: AIChatBotProps) => {
     scrollToBottom();
   }, [messages]);
 
-  // Auto-focus input when conversation stage changes (especially for phone number)
-  useEffect(() => {
-    if (inputRef.current && !isMinimized) {
-      inputRef.current.focus();
-    }
-  }, [conversationStage, isMinimized]);
-
-  // Initialize chat with welcome message
+  // Initial greeting
   useEffect(() => {
     if (isOpen && messages.length === 0) {
       setTimeout(() => {
         addBotMessage(
-          "👋 Hello! I'm your AI assistant from **Inchtomilez Digital Marketing Agency**!\n\nI'm here to help you find the perfect digital solution for your business. Let's get started!\n\n**What's your name?**",
-          []
+          "Hi! 👋 I'm here to help you learn about Inchtomilez Digital Marketing & Advertising.\n\n**What's your name?**"
         );
       }, 500);
     }
   }, [isOpen]);
 
-  // Add bot message with typing animation
-  const addBotMessage = (text: string, suggestions: string[] = []) => {
-    setIsTyping(true);
-    setTimeout(() => {
-      const botMessage: Message = {
-        id: Date.now().toString(),
-        text,
-        sender: 'bot',
-        timestamp: new Date(),
-        suggestions: suggestions.length > 0 ? suggestions : undefined
-      };
-      setMessages(prev => [...prev, botMessage]);
-      setIsTyping(false);
-    }, 800);
+  // Focus input when chatbot opens
+  useEffect(() => {
+    if (isOpen && !isMinimized) {
+      inputRef.current?.focus();
+    }
+  }, [isOpen, isMinimized]);
+
+  const addBotMessage = (text: string, suggestions?: string[]) => {
+    const message: Message = {
+      id: Date.now().toString(),
+      text,
+      sender: 'bot',
+      timestamp: new Date(),
+      suggestions,
+    };
+    setMessages((prev) => [...prev, message]);
   };
 
-  // Add user message
   const addUserMessage = (text: string) => {
-    const userMessage: Message = {
+    const message: Message = {
       id: Date.now().toString(),
       text,
       sender: 'user',
-      timestamp: new Date()
+      timestamp: new Date(),
     };
-    setMessages(prev => [...prev, userMessage]);
-    
-    // Track in conversation history
-    setLeadData(prev => ({
-      ...prev,
-      conversationHistory: [...(prev.conversationHistory || []), `User: ${text}`]
-    }));
+    setMessages((prev) => [...prev, message]);
   };
 
-  // Validate phone number (STRICT: exactly 10 digits, starts with 6/7/8/9)
+  const validateName = (name: string): boolean => {
+    return name.trim().length >= 2;
+  };
+
   const validatePhone = (phone: string): boolean => {
-    const cleaned = phone.replace(/\D/g, '');
-    // Must be EXACTLY 10 digits AND start with 6, 7, 8, or 9
-    return cleaned.length === 10 && /^[6-9]\d{9}$/.test(cleaned);
+    // Indian mobile number format: 10 digits starting with 6/7/8/9
+    const phoneRegex = /^[6-9]\d{9}$/;
+    return phoneRegex.test(phone);
   };
 
-  // Validate email
-  const validateEmail = (email: string): boolean => {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(email);
+  const saveLead = async (name: string, phone: string) => {
+    console.log('═══════════════════════════════════════════════════════');
+    console.log('🚀 [LEAD CAPTURE] STARTING PROCESS');
+    console.log('═══════════════════════════════════════════════════════');
+    console.log('📊 Name:', name);
+    console.log('📞 Phone:', phone);
+    console.log('🕐 Time:', new Date().toISOString());
+    console.log('');
+
+    const leadId = `chatbot:${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+    const leadData = {
+      id: leadId,
+      name,
+      phone,
+      email: '',
+      service: '',
+      city: '',
+      budget: '',
+      status: 'new',
+      createdAt: new Date().toISOString(),
+    };
+
+    let supabaseSuccess = false;
+    let emailSuccess = false;
+    let localStorageSuccess = false;
+
+    // 1. Save to Supabase (with retry logic)
+    console.log('💾 [SUPABASE] Attempting to save to database...');
+    for (let attempt = 1; attempt <= 3; attempt++) {
+      try {
+        console.log(`   Attempt ${attempt}/3...`);
+        const response = await fetch('/api/server/chatbot/submit', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(leadData),
+        });
+
+        if (response.ok) {
+          const result = await response.json();
+          console.log('✅ [SUPABASE] SUCCESS!');
+          console.log('   Lead ID:', result.leadId || leadId);
+          console.log('   Saved to admin dashboard');
+          supabaseSuccess = true;
+          break;
+        } else {
+          console.warn(`⚠️ [SUPABASE] Attempt ${attempt} failed:`, response.statusText);
+        }
+      } catch (error) {
+        console.error(`❌ [SUPABASE] Attempt ${attempt} error:`, error);
+      }
+
+      if (attempt < 3) {
+        await new Promise((resolve) => setTimeout(resolve, 1000));
+      }
+    }
+
+    if (!supabaseSuccess) {
+      console.error('❌ [SUPABASE] FAILED after 3 attempts');
+    }
+    console.log('');
+
+    // 2. Send Email Notification (Web3Forms)
+    console.log('📧 [EMAIL] Sending notification to inchtomilez@gmail.com...');
+    try {
+      const emailResponse = await fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          access_key: '4440f9a5-d781-49af-b6ae-80ab8ebfc4ed',
+          subject: `🔔 New AI Chatbot Lead: ${name}`,
+          from_name: 'Inchtomilez AI Chatbot',
+          email: 'inchtomilez@gmail.com',
+          message: `New lead captured via AI Chatbot:
+
+Name: ${name}
+Phone: ${phone}
+
+This lead was submitted through the AI Chatbot on the Inchtomilez website.
+
+Please follow up within 1 hour for best conversion rates.`,
+        }),
+      });
+
+      if (emailResponse.ok) {
+        console.log('✅ [EMAIL] SUCCESS: Email sent to inchtomilez@gmail.com');
+        emailSuccess = true;
+      } else {
+        console.error('❌ [EMAIL] FAILED:', emailResponse.statusText);
+      }
+    } catch (error) {
+      console.error('❌ [EMAIL] ERROR:', error);
+    }
+    console.log('');
+
+    // 3. Save to LocalStorage (Emergency Backup)
+    console.log('💿 [LOCALSTORAGE] Saving backup...');
+    try {
+      const backupData = {
+        ...leadData,
+        leadId,
+        supabaseSuccess,
+        emailSuccess,
+        timestamp: new Date().toISOString(),
+      };
+      localStorage.setItem(`chatbot_lead_${leadId}`, JSON.stringify(backupData));
+      console.log('✅ [LOCALSTORAGE] SUCCESS - Backup saved');
+      localStorageSuccess = true;
+    } catch (error) {
+      console.error('❌ [LOCALSTORAGE] ERROR:', error);
+    }
+    console.log('');
+
+    // Summary
+    console.log('═══════════════════════════════════════════════════════');
+    console.log('📊 [SUMMARY] LEAD CAPTURE RESULTS:');
+    console.log('═══════════════════════════════════════════════════════');
+    console.log(`Supabase (Admin Panel): ${supabaseSuccess ? '✅ SUCCESS' : '❌ FAILED'}`);
+    console.log(`Email (inchtomilez@gmail.com): ${emailSuccess ? '✅ SUCCESS' : '❌ FAILED'}`);
+    console.log(`LocalStorage (Backup): ${localStorageSuccess ? '✅ SUCCESS' : '❌ FAILED'}`);
+    console.log('');
+
+    if (supabaseSuccess && emailSuccess) {
+      console.log('🎉 PERFECT: Lead saved in database AND email sent!');
+    } else if (supabaseSuccess || emailSuccess) {
+      console.log('⚠️ PARTIAL: At least one primary method succeeded');
+    } else if (localStorageSuccess) {
+      console.log('🆘 BACKUP ONLY: Only LocalStorage backup succeeded');
+    } else {
+      console.log('🚨 CRITICAL: All storage methods failed!');
+    }
+    console.log('═══════════════════════════════════════════════════════');
+
+    return supabaseSuccess || emailSuccess || localStorageSuccess;
   };
 
-  // Process user input based on current stage
   const processUserInput = async (input: string) => {
     const trimmedInput = input.trim();
+    if (!trimmedInput) return;
 
-    switch (conversationStage) {
-      case 'ask_name':
-        if (trimmedInput.length < 2) {
-          addBotMessage("Please enter a valid name (at least 2 characters).");
-          return;
-        }
-        setLeadData(prev => ({ ...prev, name: trimmedInput }));
+    // Add user message
+    addUserMessage(trimmedInput);
+    setInputValue('');
+
+    // Show typing indicator
+    setIsTyping(true);
+    await new Promise((resolve) => setTimeout(resolve, 800));
+    setIsTyping(false);
+
+    // Process based on conversation stage
+    if (conversationStage === 'ask_name') {
+      if (validateName(trimmedInput)) {
+        setLeadName(trimmedInput);
+        addBotMessage(
+          `Nice to meet you, **${trimmedInput}**! 🎉\n\nWhat's your phone number?\n\n*(We'll contact you within 1 hour)*`
+        );
         setConversationStage('ask_phone');
-        addBotMessage(
-          `Nice to meet you, **${trimmedInput}**! 🎉\n\n**What's your phone number?**`,
-          []
-        );
-        break;
-
-      case 'ask_phone':
-        // STRICT VALIDATION: Must be exactly 10 digits starting with 6/7/8/9
-        const cleanedPhone = trimmedInput.replace(/\D/g, '');
-        if (!validatePhone(trimmedInput)) {
-          // Don't proceed if invalid - no error message shown
-          return;
-        }
-        setLeadData(prev => ({ ...prev, phone: cleanedPhone }));
-        setConversationStage('ask_service');
-        addBotMessage(
-          `Great! I've saved your number: **${cleanedPhone}** ✅\n\nNow, **which service are you interested in?**\n\nPlease select from the options below or type the service name:`,
-          SERVICES
-        );
-        break;
-
-      case 'ask_service':
-        const matchedService = SERVICES.find(s => 
-          s.toLowerCase() === trimmedInput.toLowerCase() || 
-          trimmedInput.toLowerCase().includes(s.toLowerCase().split(' ')[0])
-        );
+      } else {
+        // Silent validation - just ask again
+        addBotMessage("Could you tell me your full name?");
+      }
+    } else if (conversationStage === 'ask_phone') {
+      const cleanPhone = trimmedInput.replace(/\D/g, '').slice(0, 10);
+      
+      if (validatePhone(cleanPhone)) {
+        setLeadPhone(cleanPhone);
+        addBotMessage(`Great! Got your number: **${cleanPhone}** ✅\n\n⏳ Saving your details...`);
         
-        if (!matchedService) {
+        setIsSaving(true);
+        const success = await saveLead(leadName, cleanPhone);
+        setIsSaving(false);
+
+        if (success) {
           addBotMessage(
-            "Please select a valid service from the list above, or click one of the suggestions.",
-            SERVICES
+            `🎉 Thank you, **${leadName}**!\n\n✅ Your details have been saved successfully!\n✅ We've received your information\n✅ Our team will contact you within 1 hour\n\n📞 Contact: ${cleanPhone}\n\nIs there anything else you'd like to know about our services?`,
+            [
+              'Tell me about your services',
+              'What are your packages?',
+              'How much does it cost?',
+              'Show me your portfolio',
+            ]
           );
-          return;
-        }
-        setLeadData(prev => ({ ...prev, service: matchedService }));
-        setConversationStage('ask_city');
-        addBotMessage(
-          `Perfect! You're interested in **${matchedService}** 🎯\n\n**Which city are you located in?**\n\n(This helps us serve you better)`,
-          []
-        );
-        break;
-
-      case 'ask_city':
-        if (trimmedInput.length < 2) {
-          addBotMessage("Please enter a valid city name.");
-          return;
-        }
-        setLeadData(prev => ({ ...prev, city: trimmedInput }));
-        setConversationStage('ask_email');
-        addBotMessage(
-          `Got it! You're in **${trimmedInput}** 📍\n\n**What's your email address?**\n\n(We'll send you detailed information)`,
-          []
-        );
-        break;
-
-      case 'ask_email':
-        if (!validateEmail(trimmedInput)) {
-          addBotMessage("Please enter a valid email address (e.g., yourname@example.com).");
-          return;
-        }
-        setLeadData(prev => ({ ...prev, email: trimmedInput }));
-        setConversationStage('ask_budget');
-        addBotMessage(
-          `Excellent! Email saved: **${trimmedInput}** ✅\n\n**What's your approximate budget for this project?**\n\nPlease select from the options below:`,
-          BUDGETS
-        );
-        break;
-
-      case 'ask_budget':
-        const matchedBudget = BUDGETS.find(b => 
-          b.toLowerCase() === trimmedInput.toLowerCase() ||
-          trimmedInput.toLowerCase().includes(b.toLowerCase().slice(0, 5))
-        );
-        
-        if (!matchedBudget) {
+        } else {
           addBotMessage(
-            "Please select a budget range from the options above.",
-            BUDGETS
+            `Thank you, **${leadName}**! We've received your information.\n\nOur team will contact you at ${cleanPhone} within 1 hour.\n\nHow can I help you learn more about Inchtomilez?`,
+            [
+              'Tell me about your services',
+              'What are your packages?',
+            ]
           );
-          return;
         }
-        setLeadData(prev => ({ ...prev, budget: matchedBudget }));
-        
-        // Save to Google Sheets
-        await saveLeadToSheets({
-          ...leadData,
-          budget: matchedBudget
-        } as LeadData);
-        
-        setConversationStage('consultation_booking');
-        addBotMessage(
-          `Perfect! I've got all your details ✅\n\n**Here's what you've shared:**\n\n👤 Name: **${leadData.name}**\n📞 Phone: **${leadData.phone}**\n🎯 Service: **${leadData.service}**\n📍 City: **${leadData.city}**\n📧 Email: **${leadData.email}**\n💰 Budget: **${matchedBudget}**\n\n**How would you like us to connect with you?**`,
-          CONSULTATION_OPTIONS
-        );
-        break;
-
-      case 'consultation_booking':
-        handleConsultationBooking(trimmedInput);
-        break;
-
-      case 'completed':
-        addBotMessage(
-          "Thank you for connecting with us! Our team will reach out soon.\n\nIs there anything else I can help you with?",
-          ['View our services', 'Check pricing', 'See portfolio', 'Restart conversation']
-        );
-        break;
+        setConversationStage('completed');
+      } else {
+        // Silent validation - just ask again
+        addBotMessage("Please enter a valid 10-digit mobile number:");
+      }
+    } else if (conversationStage === 'completed') {
+      // Post-lead conversation
+      handlePostLeadQuery(trimmedInput);
     }
   };
 
-  // Save lead to Google Sheets and Supabase
-  const saveLeadToSheets = async (data: LeadData) => {
-    try {
-      addBotMessage("💾 Saving your information securely...");
-      
-      // Save to both Google Sheets and Supabase in parallel
-      const [sheetsResult, supabaseResult] = await Promise.allSettled([
-        submitLeadWithRetry(data),
-        chatbotAPI.submitLead({
-          name: data.name,
-          phone: data.phone,
-          email: data.email,
-          city: data.city,
-          budget: data.budget,
-          service: data.service,
-          conversationHistory: data.conversationHistory
-        })
-      ]);
-      
-      // Check Google Sheets result
-      if (sheetsResult.status === 'fulfilled' && sheetsResult.value.success) {
-        console.log('✅ Lead saved successfully to Google Sheets');
-      } else {
-        console.error('⚠️ Google Sheets save failed');
-      }
-      
-      // Check Supabase result
-      if (supabaseResult.status === 'fulfilled') {
-        console.log('✅ Lead saved successfully to Supabase database');
-      } else {
-        console.error('⚠️ Supabase save failed:', supabaseResult.reason);
-      }
-      
-      // Save to localStorage as backup
-      localStorage.setItem('inchtomilez_lead', JSON.stringify(data));
-      
-    } catch (error) {
-      console.error('Error saving lead:', error);
-      // Fallback to localStorage
-      localStorage.setItem('inchtomilez_lead', JSON.stringify(data));
-    }
-  };
+  const handlePostLeadQuery = async (query: string) => {
+    const lowerQuery = query.toLowerCase();
 
-  // Handle consultation booking selection
-  const handleConsultationBooking = (selection: string) => {
-    const lowerSelection = selection.toLowerCase();
+    setIsTyping(true);
+    await new Promise((resolve) => setTimeout(resolve, 600));
+    setIsTyping(false);
 
-    if (lowerSelection.includes('call') || lowerSelection.includes('1 hour')) {
-      setConversationStage('completed');
+    if (lowerQuery.includes('service')) {
       addBotMessage(
-        "📞 **Perfect!** Our team will call you within the next hour.\n\n**You'll receive a call on:** +91 " + leadData.phone + "\n\n✅ **Lead saved successfully!**\n\nThank you for choosing Inchtomilez! We're excited to help grow your business! 🚀",
-        []
+        `🎬 **Our Complete Service Portfolio:**\n\n**Digital Marketing:**\n• SEO Optimization\n• Social Media Marketing\n• PPC Advertising\n• Content Marketing\n\n**Creative Services:**\n• Brand Identity Design\n• UI/UX Design\n• Video Production\n• Graphic Design\n\n**Web Solutions:**\n• Website Development\n• E-commerce Solutions\n• Mobile App Development\n• Custom Software\n\n**Strategy:**\n• Marketing Strategy\n• Analytics & Reporting\n• Conversion Optimization\n• Consulting Services\n\nWhich service interests you most?`,
+        ['What are your packages?', 'How much does it cost?', 'Show me your portfolio']
       );
-    } else if (lowerSelection.includes('tomorrow')) {
-      setConversationStage('completed');
+    } else if (lowerQuery.includes('package') || lowerQuery.includes('pricing') || lowerQuery.includes('cost')) {
       addBotMessage(
-        "📅 **Great!** We've scheduled a consultation for tomorrow.\n\n**Our team will contact you tomorrow between 10 AM - 7 PM**\n\n✅ **Lead saved successfully!**\n\nWe'll discuss your project in detail. Looking forward to connecting! 💼",
-        []
+        `💰 **Our Pricing Packages:**\n\n**🌟 Starter Package**\n₹25,000 - ₹50,000/month\nPerfect for small businesses\n\n**💎 Professional Package**\n₹50,000 - ₹1,50,000/month\nIdeal for growing companies\n\n**🚀 Enterprise Package**\n₹1,50,000+/month\nCustom solutions for large brands\n\n*Prices vary based on specific requirements and services selected.*\n\nWould you like a custom quote?`,
+        ['Tell me about your services', 'Show me your portfolio', 'Contact via WhatsApp']
       );
-    } else if (lowerSelection.includes('this week')) {
-      setConversationStage('completed');
+    } else if (lowerQuery.includes('portfolio') || lowerQuery.includes('work') || lowerQuery.includes('results')) {
       addBotMessage(
-        "📅 **Excellent!** We'll schedule a call this week.\n\n**Our team will reach out within 2-3 business days**\n\n✅ **Lead saved successfully!**\n\nWe'll find the perfect time to discuss your requirements! ⏰",
-        []
+        `🏆 **Our Achievements:**\n\n✨ **500+ Successful Projects**\nAcross 21+ industries\n\n📈 **Average ROI: 300%**\nFor our clients within 6 months\n\n⭐ **98% Client Satisfaction**\nBased on verified reviews\n\n🎯 **Industry Leaders**\nAward-winning campaigns in healthcare, real estate, education, and e-commerce\n\n*Our team will share detailed case studies during your consultation call.*\n\nReady to start your transformation?`,
+        ['What are your packages?', 'Contact via WhatsApp', 'Call me']
       );
-    } else if (lowerSelection.includes('email')) {
-      setConversationStage('completed');
+    } else if (lowerQuery.includes('whatsapp')) {
       addBotMessage(
-        "📧 **Done!** We'll send you detailed information via email.\n\n**Check your inbox:** " + leadData.email + "\n\n✅ **Lead saved successfully!**\n\nYou'll receive comprehensive details about our services, pricing, and next steps within 24 hours! 📬",
-        []
+        `📱 **Connect on WhatsApp:**\n\nClick here to chat: [WhatsApp Direct Link]\n\n*Our team responds within 15 minutes during business hours (9 AM - 8 PM)*\n\nOr we'll call you at **${leadPhone}** within 1 hour!`,
+        ['Tell me about your services', 'Show me your portfolio']
       );
-    } else if (lowerSelection.includes('whatsapp')) {
-      setConversationStage('completed');
+    } else if (lowerQuery.includes('call') || lowerQuery.includes('phone')) {
       addBotMessage(
-        "💬 **Awesome!** Let's continue on WhatsApp!\n\n**Click the WhatsApp button** (bottom-right of screen) to connect instantly.\n\n✅ **Lead saved successfully!**\n\nOur team is ready to chat with you on WhatsApp! 📱",
-        []
+        `📞 **We'll Call You Soon!**\n\n✅ Your number: **${leadPhone}**\n⏰ Expected call time: Within 1 hour\n🕒 Business hours: 9 AM - 8 PM (Mon-Sat)\n\n*Our marketing consultant will discuss your requirements and create a custom strategy.*\n\nAnything else I can help with?`,
+        ['What are your packages?', 'Show me your portfolio']
+      );
+    } else if (lowerQuery.includes('email')) {
+      addBotMessage(
+        `📧 **Email Details Sent!**\n\nWe've sent a comprehensive brochure and pricing details to the email associated with your contact.\n\n*Check your inbox (and spam folder) in the next 5-10 minutes.*\n\nWhat else would you like to know?`,
+        ['Tell me about your services', 'What are your packages?']
       );
     } else {
+      // Default response
       addBotMessage(
-        "Please select one of the consultation options above:",
-        CONSULTATION_OPTIONS
+        `I'm here to help! I can tell you about:\n\n✨ Our services\n💰 Pricing packages\n🏆 Portfolio & results\n📞 Contact options\n\nWhat would you like to know?`,
+        ['Tell me about your services', 'What are your packages?', 'Show me your portfolio']
       );
     }
   };
 
-  // Handle send message
-  const handleSendMessage = () => {
-    if (!inputValue.trim()) return;
-
-    addUserMessage(inputValue);
-    processUserInput(inputValue);
-    setInputValue('');
-  };
-
-  // Handle suggestion click
   const handleSuggestionClick = (suggestion: string) => {
-    addUserMessage(suggestion);
     processUserInput(suggestion);
   };
 
-  // Handle minimize/maximize
-  const toggleMinimize = () => {
-    setIsMinimized(!isMinimized);
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    processUserInput(inputValue);
+  };
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    let value = e.target.value;
+    
+    // If collecting phone number, auto-filter to numbers only and limit to 10 digits
+    if (conversationStage === 'ask_phone') {
+      value = value.replace(/\D/g, '').slice(0, 10);
+    }
+    
+    setInputValue(value);
   };
 
   if (!isOpen) return null;
 
   return (
-    <div 
-      className={`fixed bottom-24 right-8 z-[9998] transition-all duration-300 ${
-        isMinimized ? 'w-80' : 'w-96'
-      }`}
-      style={{ maxHeight: isMinimized ? '60px' : '600px' }}
-    >
-      {/* Chat Container */}
-      <div className="bg-black border-2 border-white/20 rounded-2xl overflow-hidden shadow-2xl">
+    <div className="fixed bottom-4 right-4 z-[9999] flex flex-col">
+      {/* Chatbot Window */}
+      <div
+        className={`glass-strong rounded-2xl shadow-2xl overflow-hidden transition-all duration-300 ${
+          isMinimized ? 'h-16 w-80' : 'h-[min(85vh,600px)] w-[min(calc(100vw-32px),380px)]'
+        }`}
+        style={{
+          backdropFilter: 'blur(20px)',
+          border: '1px solid rgba(255,255,255,0.1)',
+        }}
+      >
         {/* Header */}
-        <div className="bg-gradient-to-r from-yellow-500 to-yellow-600 p-4 flex items-center justify-between">
+        <div className="bg-yellow-500 text-black px-4 py-3 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-black rounded-full flex items-center justify-center">
-              <Bot className="text-yellow-500" />
+            <div className="w-8 h-8 bg-black rounded-full flex items-center justify-center">
+              <Bot className="w-5 h-5 text-white" />
             </div>
             <div>
-              <h3 className="text-black">Inchtomilez AI</h3>
-              <div className="flex items-center gap-2">
-                <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-                <span className="text-black/80 text-xs">Online</span>
+              <div className="font-semibold text-sm md:text-base">Inchtomilez AI Assistant</div>
+              <div className="flex items-center gap-1 text-xs">
+                <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
+                <span>Online</span>
               </div>
             </div>
           </div>
           <div className="flex items-center gap-2">
             <button
-              onClick={toggleMinimize}
-              className="p-2 hover:bg-black/10 rounded-lg transition-colors group relative"
-              aria-label={isMinimized ? "Maximize" : "Minimize"}
-              title={isMinimized ? "Maximize" : "Minimize"}
+              onClick={() => setIsMinimized(!isMinimized)}
+              className="hover:bg-black/10 p-1.5 rounded transition-colors"
+              aria-label={isMinimized ? 'Maximize' : 'Minimize'}
             >
-              {isMinimized ? <Maximize2 className="text-black" size={20} /> : <Minimize2 className="text-black" size={20} />}
+              {isMinimized ? (
+                <Maximize2 className="w-4 h-4" />
+              ) : (
+                <Minimize2 className="w-4 h-4" />
+              )}
             </button>
             <button
               onClick={onClose}
-              className="p-2 hover:bg-black/10 rounded-lg transition-colors group relative"
-              aria-label="Close Chat"
-              title="Close Chat"
+              className="hover:bg-black/10 p-1.5 rounded transition-colors"
+              aria-label="Close"
             >
-              <X className="text-black" size={20} />
+              <X className="w-4 h-4" />
             </button>
           </div>
         </div>
 
-        {/* Chat Body */}
+        {/* Messages Area */}
         {!isMinimized && (
           <>
-            {/* Progress Indicator */}
-            <div className="bg-white/5 p-3 border-b border-white/10">
-              <div className="flex items-center justify-between mb-2">
-                <span className="text-white/60 text-xs">Lead Capture Progress</span>
-                <span className="text-yellow-500 text-xs">
-                  {conversationStage === 'ask_name' && '1/6'}
-                  {conversationStage === 'ask_phone' && '2/6'}
-                  {conversationStage === 'ask_service' && '3/6'}
-                  {conversationStage === 'ask_city' && '4/6'}
-                  {conversationStage === 'ask_email' && '5/6'}
-                  {conversationStage === 'ask_budget' && '6/6'}
-                  {(conversationStage === 'consultation_booking' || conversationStage === 'completed') && 'Complete ✅'}
-                </span>
-              </div>
-              <div className="w-full bg-white/10 rounded-full h-2">
-                <div 
-                  className="bg-yellow-500 h-2 rounded-full transition-all duration-500"
-                  style={{
-                    width: 
-                      conversationStage === 'ask_name' ? '16%' :
-                      conversationStage === 'ask_phone' ? '33%' :
-                      conversationStage === 'ask_service' ? '50%' :
-                      conversationStage === 'ask_city' ? '66%' :
-                      conversationStage === 'ask_email' ? '83%' :
-                      conversationStage === 'ask_budget' ? '100%' :
-                      '100%'
-                  }}
-                ></div>
-              </div>
-            </div>
-
-            {/* Messages Container */}
-            <div className="h-96 overflow-y-auto p-4 space-y-4 bg-black">
+            <div className="bg-black/95 h-[calc(100%-8rem)] overflow-y-auto p-4 space-y-4">
               {messages.map((message) => (
-                <div
-                  key={message.id}
-                  className={`flex ${message.sender === 'user' ? 'justify-end' : 'justify-start'}`}
-                >
+                <div key={message.id} className="flex flex-col gap-2">
                   <div
-                    className={`max-w-[80%] rounded-2xl p-4 ${
-                      message.sender === 'user'
-                        ? 'bg-yellow-500 text-black'
-                        : 'bg-white/10 text-white border border-white/20'
+                    className={`flex gap-2 ${
+                      message.sender === 'user' ? 'justify-end' : 'justify-start'
                     }`}
                   >
-                    {/* Message Header */}
-                    <div className="flex items-center gap-2 mb-2">
-                      {message.sender === 'bot' ? (
-                        <Bot size={16} className="text-yellow-500" />
-                      ) : (
-                        <User size={16} />
+                    {message.sender === 'bot' && (
+                      <div className="w-7 h-7 bg-yellow-500 rounded-full flex items-center justify-center flex-shrink-0">
+                        <Bot className="w-4 h-4 text-black" />
+                      </div>
+                    )}
+                    <div
+                      className={`max-w-[75%] px-3 py-2 rounded-2xl text-xs md:text-sm ${
+                        message.sender === 'user'
+                          ? 'bg-yellow-500 text-black rounded-br-none'
+                          : 'bg-white/5 text-white rounded-bl-none'
+                      }`}
+                      style={{ whiteSpace: 'pre-wrap' }}
+                    >
+                      {message.text.split('**').map((part, index) =>
+                        index % 2 === 1 ? <strong key={index}>{part}</strong> : part
                       )}
-                      <span className="text-xs opacity-70">
-                        {message.timestamp.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })}
-                      </span>
                     </div>
-
-                    {/* Message Text */}
-                    <div className="whitespace-pre-wrap">
-                      {message.text.split('\n').map((line, i) => {
-                        // Bold text handling
-                        const parts = line.split('**');
-                        return (
-                          <div key={i}>
-                            {parts.map((part, j) => (
-                              j % 2 === 0 ? part : <strong key={j}>{part}</strong>
-                            ))}
-                          </div>
-                        );
-                      })}
-                    </div>
-
-                    {/* Suggestions */}
-                    {message.suggestions && message.suggestions.length > 0 && (
-                      <div className="mt-4 space-y-2">
-                        {message.suggestions.map((suggestion, index) => (
-                          <button
-                            key={index}
-                            onClick={() => handleSuggestionClick(suggestion)}
-                            className="w-full text-left px-3 py-2 bg-white/5 hover:bg-white/10 border border-white/20 hover:border-yellow-500/50 rounded-lg transition-all duration-200 text-sm"
-                          >
-                            {suggestion}
-                          </button>
-                        ))}
+                    {message.sender === 'user' && (
+                      <div className="w-7 h-7 bg-yellow-500 rounded-full flex items-center justify-center flex-shrink-0">
+                        <User className="w-4 h-4 text-black" />
                       </div>
                     )}
                   </div>
+
+                  {/* Suggestions */}
+                  {message.suggestions && message.suggestions.length > 0 && (
+                    <div className="flex flex-wrap gap-2 ml-9">
+                      {message.suggestions.map((suggestion, index) => (
+                        <button
+                          key={index}
+                          onClick={() => handleSuggestionClick(suggestion)}
+                          className="text-xs px-3 py-1.5 bg-white/5 hover:bg-yellow-500 hover:text-black text-white rounded-full transition-colors border border-white/10"
+                        >
+                          {suggestion}
+                        </button>
+                      ))}
+                    </div>
+                  )}
                 </div>
               ))}
 
               {/* Typing Indicator */}
               {isTyping && (
-                <div className="flex justify-start">
-                  <div className="bg-white/10 border border-white/20 rounded-2xl p-4">
-                    <div className="flex items-center gap-2">
-                      <div className="flex gap-1">
-                        <div className="w-2 h-2 bg-yellow-500 rounded-full animate-bounce" style={{ animationDelay: '0ms' }}></div>
-                        <div className="w-2 h-2 bg-yellow-500 rounded-full animate-bounce" style={{ animationDelay: '150ms' }}></div>
-                        <div className="w-2 h-2 bg-yellow-500 rounded-full animate-bounce" style={{ animationDelay: '300ms' }}></div>
-                      </div>
-                      <span className="text-white/60 text-xs">AI is typing...</span>
-                    </div>
+                <div className="flex gap-2 items-center">
+                  <div className="w-7 h-7 bg-yellow-500 rounded-full flex items-center justify-center">
+                    <Bot className="w-4 h-4 text-black" />
+                  </div>
+                  <div className="bg-white/5 px-4 py-2 rounded-2xl rounded-bl-none flex gap-1">
+                    <div className="w-2 h-2 bg-yellow-500 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
+                    <div className="w-2 h-2 bg-yellow-500 rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
+                    <div className="w-2 h-2 bg-yellow-500 rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
                   </div>
                 </div>
               )}
@@ -544,51 +474,47 @@ const AIChatBot = ({ isOpen, onClose }: AIChatBotProps) => {
             </div>
 
             {/* Input Area */}
-            <div className="p-4 bg-white/5 border-t border-white/10">
-              <div className="flex gap-2">
-                <Input
+            <div className="bg-black border-t border-white/10 p-3">
+              <form onSubmit={handleSubmit} className="flex gap-2">
+                <input
                   ref={inputRef}
-                  type={conversationStage === 'ask_phone' ? 'tel' : conversationStage === 'ask_email' ? 'email' : 'text'}
-                  inputMode={conversationStage === 'ask_phone' ? 'numeric' : conversationStage === 'ask_email' ? 'email' : 'text'}
-                  pattern={conversationStage === 'ask_phone' ? '[6-9][0-9]{9}' : undefined}
-                  maxLength={conversationStage === 'ask_phone' ? 10 : undefined}
-                  autoComplete={conversationStage === 'ask_phone' ? 'tel' : conversationStage === 'ask_email' ? 'email' : 'off'}
+                  type={conversationStage === 'ask_phone' ? 'tel' : 'text'}
                   value={inputValue}
-                  onChange={(e) => setInputValue(e.target.value)}
-                  onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
+                  onChange={handleInputChange}
                   placeholder={
-                    conversationStage === 'ask_name' ? 'Type your name...' :
-                    conversationStage === 'ask_phone' ? '9876543210' :
-                    conversationStage === 'ask_service' ? 'Type or select a service...' :
-                    conversationStage === 'ask_city' ? 'Type your city...' :
-                    conversationStage === 'ask_email' ? 'your@email.com' :
-                    conversationStage === 'ask_budget' ? 'Select your budget...' :
-                    'Type your message...'
+                    conversationStage === 'ask_name'
+                      ? 'Enter your name...'
+                      : conversationStage === 'ask_phone'
+                      ? 'Enter 10-digit mobile number...'
+                      : 'Type your message...'
                   }
-                  className="flex-1 bg-black border-white/20 text-white placeholder:text-white/40 focus:border-yellow-500"
+                  className="flex-1 bg-white/5 text-white px-4 py-2 rounded-full text-xs md:text-sm focus:outline-none focus:ring-2 focus:ring-yellow-500 border border-white/10"
+                  disabled={isSaving}
+                  maxLength={conversationStage === 'ask_phone' ? 10 : undefined}
                 />
-                <Button
-                  onClick={handleSendMessage}
-                  disabled={!inputValue.trim() || (conversationStage === 'ask_phone' && !validatePhone(inputValue))}
-                  className="bg-yellow-500 hover:bg-yellow-600 text-black px-6"
+                <button
+                  type="submit"
+                  disabled={isSaving || !inputValue.trim()}
+                  className="bg-yellow-500 hover:bg-yellow-400 disabled:bg-gray-600 disabled:cursor-not-allowed text-black p-2.5 rounded-full transition-colors flex items-center justify-center"
+                  aria-label="Send message"
                 >
-                  <Send size={20} />
-                </Button>
-              </div>
+                  <Send className="w-4 h-4" />
+                </button>
+              </form>
               {conversationStage === 'ask_phone' && (
-                <div className="mt-2 text-center text-xs text-yellow-500/60">
-                  10 digits • Starts with 6, 7, 8, or 9
-                </div>
+                <p className="text-[10px] text-gray-400 mt-1 text-center">
+                  Step 2/2 • Enter valid Indian mobile number
+                </p>
               )}
-              <div className="mt-2 text-center text-xs text-white/40">
-                Powered by Inchtomilez AI • Secure & Encrypted
-              </div>
+              {conversationStage === 'ask_name' && (
+                <p className="text-[10px] text-gray-400 mt-1 text-center">
+                  Step 1/2 • Tell us your name
+                </p>
+              )}
             </div>
           </>
         )}
       </div>
     </div>
   );
-};
-
-export default AIChatBot;
+}

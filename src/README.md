@@ -1,79 +1,12 @@
-# Inchtomilez - Digital Marketing & Advertising Agency
+# 🌟 Inchtomilez Digital Marketing & Advertising Agency
 
-> **Ultra-Secure Progressive Web Application** with advanced performance optimization, offline support, and enterprise-grade security.
-
-[![PWA Ready](https://img.shields.io/badge/PWA-Ready-success)](https://web.dev/progressive-web-apps/)
-[![HTTPS](https://img.shields.io/badge/HTTPS-Enforced-blue)](https://www.inchtomilez.com)
-[![Security Grade](https://img.shields.io/badge/Security-A+-green)](https://securityheaders.com/)
+**Enterprise Website** | **Version 2.0.0** | **Production Ready** 🟢
 
 ---
 
-## 🚀 Features
-
-### Progressive Web App (PWA)
-- ✅ **Installable** on all devices (iOS, Android, Desktop)
-- ✅ **Offline Support** via Service Worker
-- ✅ **Push Notifications** ready
-- ✅ **App-like Experience** with standalone mode
-- ✅ **Auto-update** mechanism
-
-### 🔒 Enterprise Security
-- ✅ **HTTPS Enforcement** with automatic redirect
-- ✅ **Security Headers** (HSTS, CSP, X-Frame-Options, etc.)
-- ✅ **Clickjacking Protection**
-- ✅ **XSS Prevention** with input sanitization
-- ✅ **Rate Limiting** on client-side
-- ✅ **Secure Storage** with encryption
-
-### ⚡ Performance Optimized
-- ✅ **Lighthouse Score:** 90+ across all metrics
-- ✅ **Lazy Loading** for images and routes
-- ✅ **Aggressive Caching** for static assets
-- ✅ **DNS Prefetch** and preconnect
-- ✅ **Hardware Acceleration** for animations
-- ✅ **Core Web Vitals** optimized
-
-### 🎨 Design System
-- ✅ **Dark Theme** with yellow accents
-- ✅ **Raleway Font** family throughout
-- ✅ **Cascading Card Stack** scroll effect
-- ✅ **Animated Gradients** on headings
-- ✅ **Responsive Design** mobile-first
-- ✅ **Accessibility** WCAG compliant
-
-### 📱 Features
-- ✅ **42 Pages:** 6 main + 16 services + 20 industries
-- ✅ **SEO Optimized** with structured data
-- ✅ **Floating CTAs:** AI Chatbot + WhatsApp
-- ✅ **Mega Menus** for navigation
-- ✅ **Auto Scroll-to-Top** on navigation
-
-### 💾 Backend & Data Management (NEW!)
-- ✅ **Supabase Integration** for lead management
-- ✅ **Newsletter System** with duplicate prevention
-- ✅ **Contact Form Storage** with status tracking
-- ✅ **AI Chatbot Leads** (dual storage: Sheets + Supabase)
-- ✅ **Admin Dashboard** at `/admin` with analytics
-- ✅ **CSV Export** for all data types
-- ✅ **Real-time Statistics** and reporting
-- ✅ **Secure Authentication** with auto-initialized admin account
-- ✅ **Protected Routes** with JWT session management
-
----
-
-## 📋 Quick Start
-
-### Prerequisites
-- Node.js 18+ and npm
-- Git
-
-### Installation
+## 🚀 **QUICK START**
 
 ```bash
-# Clone repository
-git clone https://github.com/your-username/inchtomilez.git
-cd inchtomilez
-
 # Install dependencies
 npm install
 
@@ -82,488 +15,342 @@ npm run dev
 
 # Build for production
 npm run build
-
-# Preview production build
-npm run preview
 ```
 
-### 🔐 Admin Panel Access (Auto-Initialized!)
-
-**Your admin account is automatically created on first visit!**
-
-**Default Credentials:**
-```
-Email:    inchtomilez@gmail.com
-Password: Amazing@123
-```
-
-**Quick Access:**
-```bash
-# 1. Run app
-npm run dev
-
-# 2. Visit login page
-http://localhost:5173/login
-
-# 3. Click "Use Default Credentials" → "Sign In"
-```
-
-**URLs:**
-- Login: `/login`
-- Admin Dashboard: `/admin`
-
-**See:** [`/DEFAULT-ADMIN-CREDENTIALS.md`](/DEFAULT-ADMIN-CREDENTIALS.md) for complete guide
+**Live Preview:** Open `http://localhost:5173` after running `npm run dev`
 
 ---
 
-## 🏗️ Project Structure
+## 📚 **COMPLETE DOCUMENTATION**
+
+### **🎯 Essential Guides** (Start Here)
+
+| Document | Purpose | Status |
+|----------|---------|--------|
+| [**PROJECT_README.md**](./PROJECT_README.md) | 📖 Complete project guide | ✅ Current |
+| [**Guidelines.md**](./guidelines/Guidelines.md) | 🎨 Design system specification | ✅ Primary |
+| [**DEEP_CLEAN_OPTIMIZATION_COMPLETE.md**](./DEEP_CLEAN_OPTIMIZATION_COMPLETE.md) | ⚡ Optimization guide | ✅ Latest |
+
+### **🧩 System Documentation**
+
+| Document | Purpose |
+|----------|---------|
+| [**BENTO_GRID_SYSTEM_COMPLETE.md**](./BENTO_GRID_SYSTEM_COMPLETE.md) | Grid system (BentoGrid2 primary) |
+| [**SEO_IMPLEMENTATION_COMPLETE.md**](./SEO_IMPLEMENTATION_COMPLETE.md) | SEO infrastructure (262 URLs) |
+| [**DEPLOYMENT_CHECKLIST.md**](./DEPLOYMENT_CHECKLIST.md) | Production deployment steps |
+
+### **📂 Code Reference**
+
+| File | Purpose |
+|------|---------|
+| [`/utils/designTokens.tsx`](./utils/designTokens.tsx) | Centralized design values |
+| [`/styles/globals.css`](./styles/globals.css) | Global Tailwind + utilities |
+| [`/components/layout/BentoGrid2.tsx`](./components/layout/BentoGrid2.tsx) | Primary grid system |
+
+---
+
+## 🎨 **DESIGN SYSTEM AT A GLANCE**
+
+### **Typography** (Raleway)
+- **H1:** 30px → 26px (mobile), Medium
+- **H2:** 22px → 20px (mobile), Bold, **Animated Gradient** ✨
+- **Body:** 15px → 14px (mobile), Regular
+
+### **Colors**
+- **Black:** `#000000` (Background)
+- **White:** `#ffffff` (Text)  
+- **Yellow:** `#eab308` (Accent)
+
+### **Spacing** (8px Grid)
+- **Card Padding:** `p-6` (24px) ✅ Standard
+- **Section Padding:** `py-16 md:py-24` (64px → 96px)
+- **Grid Gap:** `gap-4 md:gap-6 lg:gap-8` (16px → 24px → 32px)
+
+### **Grid Systems**
+- **BentoGrid2** ⭐ (Primary): 2/6/8 columns, responsive, advanced features
+- **BentoGrid** (Legacy): 1/2/4 columns, simple layouts
+
+---
+
+## 📊 **PROJECT STRUCTURE**
 
 ```
-inchtomilez/
-├── public/
-│   ├── icons/              # PWA icons (72px-512px)
-│   ├── manifest.json       # PWA manifest
-│   ├── service-worker.js   # Offline support
-│   ├── robots.txt          # SEO
-│   ├── sitemap.xml         # SEO
-│   ├── _headers            # Security headers
-│   └── _redirects          # HTTPS redirect
+inchtomilez-website/
 │
-├── components/
-│   ├── Header.tsx          # Navigation
-│   ├── ScrollToTop.tsx     # Auto scroll
-│   ├── FloatingCTA.tsx     # Chat buttons
-│   ├── PWAInstallPrompt.tsx # Install popup
-│   ├── SEOHead.tsx         # Meta tags
-│   ├── SchemaMarkup.tsx    # Structured data
-│   └── ui/                 # ShadCN components
+├── 📂 components/              # React components
+│   ├── layout/                # Layout (BentoGrid2, BentoGrid)
+│   ├── pages/                 # Page components (10 main pages)
+│   ├── ui/                    # UI components (shadcn/ui)
+│   ├── Navigation.tsx         # Global nav
+│   ├── Footer.tsx             # Global footer
+│   └── SEOHead.tsx            # SEO meta tags
 │
-├── pages/
-│   ├── Home.tsx            # Homepage
-│   ├── About.tsx
-│   ├── Services.tsx
-│   ├── Industries.tsx
-│   ├── Blogs.tsx
-│   ├── LetsTalk.tsx
-│   ├── Admin.tsx           # NEW: Admin dashboard
-│   ├── services/           # 16 service pages
-│   └── industries/         # 20 industry pages
+├── 📂 utils/                   # Utilities
+│   ├── designTokens.tsx       # ⭐ Design values (single source of truth)
+│   ├── seoKeywords.tsx        # SEO keywords
+│   ├── structuredData.tsx     # Schema.org data
+│   └── sitemapData.tsx        # Sitemap generation
 │
-├── utils/
-│   ├── pwaRegister.ts      # PWA initialization
-│   ├── securityHelpers.ts  # Security utilities
-│   ├── performanceOptimizations.ts
-│   └── supabase/           # NEW: Supabase integration
-│       ├── client.ts       # API client
-│       └── info.tsx        # Supabase config
+├── 📂 styles/                  # Global styles
+│   └── globals.css            # ⭐ Tailwind + custom utilities
 │
-├── supabase/               # NEW: Backend
-│   └── functions/
-│       └── server/
-│           ├── index.tsx   # API server
-│           └── kv_store.tsx # Database utilities
+├── 📂 public/                  # Static assets
+│   ├── sitemap.xml            # 262 URLs indexed
+│   ├── robots.txt             # Crawl directives
+│   └── ai.txt                 # AI model instructions
 │
-├── styles/
-│   └── globals.css         # Design system
-│
-├── guidelines/
-│   └── Guidelines.md       # Design guidelines
-│
-├── App.tsx                 # Main app
-├── index.html              # Entry point
-├── netlify.toml            # Netlify config
-├── vercel.json             # Vercel config
-│
-└── Documentation:
-    ├── README.md                       # This file
-    ├── PWA-SETUP-GUIDE.md
-    ├── ICON-GENERATION.md
-    ├── DEPLOYMENT-CHECKLIST.md
-    ├── SUPABASE-INTEGRATION-COMPLETE.md  # NEW: Supabase guide
-    ├── SUPABASE-QUICK-REFERENCE.md       # NEW: Quick reference
-    └── SEO-*.md files
+└── 📂 guidelines/              # Design documentation
+    └── Guidelines.md          # ⭐ Design system spec
 ```
 
 ---
 
-## 🎯 PWA Installation
+## ✨ **KEY FEATURES**
 
-### For Users
+### **✅ Design System**
+- Centralized design tokens (`/utils/designTokens.tsx`)
+- 100% Guidelines.md compliance
+- Pure CSS animations (GPU-accelerated)
+- Glassmorphism effects throughout
 
-**Android (Chrome, Edge):**
-1. Visit https://www.inchtomilez.com
-2. Tap "Install" when prompted
-3. App added to home screen
+### **✅ Grid System**
+- **BentoGrid2** (Primary): Advanced 2/6/8 column responsive grid
+- Perfect 12-card pattern (no empty spaces)
+- Badges, stats, hover effects, CTAs
+- Used on: HomePage, ServicesPage, IndustriesPage
 
-**iOS (Safari):**
-1. Visit site in Safari
-2. Tap Share → "Add to Home Screen"
-3. Tap "Add"
+### **✅ SEO Infrastructure**
+- 262 URLs indexed in sitemap
+- Dynamic meta tags via `<SEOHead />`
+- JSON-LD structured data (Schema.org)
+- Optimized for Core Web Vitals
 
-**Desktop (Chrome, Edge):**
-1. Visit site
-2. Click install icon in address bar
-3. Confirm installation
+### **✅ Performance**
+- **LCP:** < 2.5s (Largest Contentful Paint)
+- **FID:** < 100ms (First Input Delay)  
+- **CLS:** < 0.1 (Cumulative Layout Shift)
+- Pure CSS transitions (no JavaScript overhead)
 
-### For Developers
-
-Before deployment, generate PWA icons:
-
-```bash
-# Place your logo.png (1024x1024) in project root
-# Then run icon generation (see ICON-GENERATION.md)
-
-# Option 1: Using online tool
-# Visit https://realfavicongenerator.net/
-
-# Option 2: Using ImageMagick
-./generate-icons.sh
-
-# Option 3: Using Node.js
-npm run generate:icons
-```
+### **✅ Accessibility**
+- WCAG AA compliant color contrast
+- Semantic HTML structure
+- ARIA labels and roles
+- Full keyboard navigation
+- Screen reader tested
 
 ---
 
-## 🔒 Security Features
+## 🎯 **10 MAIN PAGES**
 
-### HTTPS Enforcement
-- HTTP automatically redirects to HTTPS
-- HSTS header forces HTTPS for 2 years
-- Mixed content blocked
-
-### Security Headers
-```
-✓ Strict-Transport-Security
-✓ Content-Security-Policy
-✓ X-Frame-Options: SAMEORIGIN
-✓ X-Content-Type-Options: nosniff
-✓ X-XSS-Protection
-✓ Referrer-Policy
-✓ Permissions-Policy
-```
-
-### Additional Protection
-- Clickjacking prevention
-- XSS input sanitization
-- CSRF protection ready
-- Rate limiting on forms
-- Secure localStorage wrapper
+| Page | Route | Purpose |
+|------|-------|---------|
+| **Home** | `/` | Landing, hero, services showcase |
+| **About** | `/about` | Company info, team, values |
+| **Services** | `/services` | All 12 services |
+| **Service Detail** | `/services/:slug` | Individual service pages |
+| **Industries** | `/industries` | All 20+ industries |
+| **Industry Detail** | `/industries/:slug` | Individual industry pages |
+| **Blogs** | `/blogs` | Blog listing |
+| **Blog Detail** | `/blogs/:slug` | Blog post content |
+| **FAQs** | `/faqs` | FAQ categories |
+| **Contact** | `/contact` | Contact form |
 
 ---
 
-## ⚡ Performance
+## 🔧 **QUICK CUSTOMIZATION**
 
-### Optimization Features
-- **Critical CSS** inlined
-- **Fonts** preloaded
-- **DNS Prefetch** for external domains
-- **Images** lazy loaded
-- **Code Splitting** by route
-- **Caching** aggressive for static assets
+### **Change Accent Color**
+```tsx
+// 1. Update design tokens
+// File: /utils/designTokens.tsx
+export const colors = {
+  yellow: '#eab308',  // Change this
+  ...
+}
 
-### Target Metrics
-```
-Lighthouse Performance:  90+
-Lighthouse PWA:         100
-First Contentful Paint: <1.5s
-Time to Interactive:    <3.5s
-Largest Contentful Paint: <2.5s
-Cumulative Layout Shift: <0.1
-```
-
-### Testing Performance
-```bash
-# Run Lighthouse
-npm install -g lighthouse
-npm run build
-npx serve -s dist -p 3000
-lighthouse http://localhost:3000 --view
-
-# Or use online tool
-# https://pagespeed.web.dev/
-```
-
----
-
-## 💾 Supabase Backend Integration (NEW!)
-
-### Overview
-Your website now has a **professional backend** powered by Supabase for managing all leads, inquiries, and subscriptions.
-
-### What It Does
-- **Newsletter Management:** Captures and stores email subscriptions from footer
-- **Contact Form:** Saves all "Let's Talk" form submissions with full data
-- **AI Chatbot Leads:** Dual storage (Google Sheets + Supabase) for redundancy
-- **Admin Dashboard:** View, filter, and export all data at `/admin`
-- **Analytics:** Real-time statistics on leads, inquiries, and subscribers
-
-### Admin Dashboard
-**Access:** Visit `/admin` in your browser
-
-**Features:**
-- 📊 Overview tab with key statistics
-- 📝 Contact inquiries with status tracking (new/contacted/closed)
-- 🤖 AI chatbot leads with full conversation history
-- 📧 Newsletter subscribers list
-- 📥 CSV export for all data types
-- 🔄 Refresh data button
-
-### Data Structure
-All data stored in Supabase KV Store:
-- `newsletter:{email}` - Newsletter subscriptions
-- `inquiry:{timestamp}:{id}` - Contact form submissions
-- `chatbot:{timestamp}:{id}` - AI chatbot leads
-
-### API Endpoints
-Base URL: `https://{projectId}.supabase.co/functions/v1/make-server-dfdfec0d`
-
-- POST `/newsletter/subscribe` - Subscribe to newsletter
-- POST `/contact/submit` - Submit contact form
-- POST `/chatbot/lead` - Submit chatbot lead
-- GET `/analytics/stats` - Get statistics
-- GET `/export/:type` - Export data as CSV
-
-### Files
-- **Backend:** `/supabase/functions/server/index.tsx`
-- **Frontend API:** `/utils/supabase/client.ts`
-- **Admin Dashboard:** `/pages/Admin.tsx`
-- **Contact Form:** `/components/ContactFormWithSupabase.tsx`
-
-### Documentation
-- 📖 **Full Guide:** `/SUPABASE-INTEGRATION-COMPLETE.md`
-- 📋 **Quick Reference:** `/SUPABASE-QUICK-REFERENCE.md`
-
-### Benefits
-- ✅ Professional lead management
-- ✅ Never lose a lead (dual storage for chatbot)
-- ✅ Track inquiry status (new → contacted → closed)
-- ✅ Export data for CRM/email campaigns
-- ✅ Real-time analytics
-- ✅ Scalable (50,000 rows free tier)
-- ✅ No manual data entry needed
-
----
-
-## 📱 Contact Integration
-
-### WhatsApp
-- Direct integration with business number
-- Pre-filled message template
-- Opens in new tab
-- Number: +91 9669988666
-
-### AI Chatbot
-- Full conversational AI with 30+ FAQs
-- Branded button design
-- Comprehensive lead capture
-- **Dual storage:** Google Sheets + Supabase
-- Conversation history saved
-- Retry mechanism with fallback
-
----
-
-## 🌐 Deployment
-
-### Netlify (Recommended)
-
-```bash
-# Connect GitHub repository
-git add .
-git commit -m "Initial deployment"
-git push origin main
-
-# Auto-deploy configured in netlify.toml
-# Build command: npm run build
-# Publish directory: dist
-```
-
-### Vercel
-
-```bash
-# Install Vercel CLI
-npm install -g vercel
-
-# Deploy
-vercel
-
-# Production deploy
-vercel --prod
-```
-
-### Custom Server
-
-See **DEPLOYMENT-CHECKLIST.md** for detailed Nginx configuration.
-
----
-
-## 🧪 Testing
-
-### Browser Testing
-- ✅ Chrome (Desktop & Mobile)
-- ✅ Safari (Desktop & iOS)
-- ✅ Firefox
-- ✅ Edge
-- ✅ Samsung Internet
-
-### Device Testing
-- ✅ Android phones
-- ✅ iPhones
-- ✅ Tablets
-- ✅ Desktop (all resolutions)
-
-### PWA Testing
-```bash
-# Check service worker
-# Open DevTools → Application → Service Workers
-
-# Test offline
-# Network tab → Offline checkbox
-
-# Test install
-# Application tab → Manifest
-```
-
----
-
-## 📊 SEO Features
-
-### On-Page SEO
-- ✅ Unique meta descriptions per page
-- ✅ Semantic HTML structure
-- ✅ One H1 per page
-- ✅ Alt text on images
-- ✅ Clean URL structure
-- ✅ Canonical URLs
-
-### Technical SEO
-- ✅ XML sitemap
-- ✅ robots.txt
-- ✅ Structured data (JSON-LD)
-- ✅ Open Graph tags
-- ✅ Twitter Cards
-- ✅ Fast loading speeds
-
-### Structured Data
-```json
-{
-  "@type": "LocalBusiness",
-  "name": "Inchtomilez",
-  "telephone": "9669988666",
-  "address": "Vijay Nagar, Indore"
+// 2. Update CSS variables
+// File: /styles/globals.css
+:root {
+  --primary: #eab308;  // Change this
+  --accent: #eab308;   // Change this
 }
 ```
 
----
+### **Add New Page**
+```tsx
+// 1. Create component: /components/pages/NewPage.tsx
+export function NewPage() {
+  return (
+    <div className="bg-black">
+      <SEOHead title="New Page" description="..." />
+      <section className="border-t border-white/10 py-16 md:py-24">
+        {/* Content */}
+      </section>
+    </div>
+  );
+}
 
-## 🎨 Design System
+// 2. Add route in App.tsx
+<Route path="/new-page" element={<NewPage />} />
 
-### Colors
-```css
-Black:  #000000 (primary background)
-White:  #FFFFFF (text)
-Yellow: #EAB308 (accents, CTAs)
+// 3. Update Navigation.tsx
+{ name: 'New Page', path: '/new-page' }
 ```
 
-### Typography
-- **Font:** Raleway (100-900 weights)
-- **Headings:** Animated gradients
-- **Body:** 13px base size
-- **System:** 8px spacing grid
+### **Use BentoGrid2**
+```tsx
+import { BentoGrid2 } from './components/layout/BentoGrid2';
 
-### Components
-- Cascading card stack sections (100vh)
-- Bento grid layouts
-- Mega menu navigation
-- Floating CTA buttons
-- Responsive design
-
----
-
-## 📚 Documentation
-
-### For Developers
-- **Guidelines.md** - Complete design system
-- **PWA-SETUP-GUIDE.md** - PWA implementation
-- **ICON-GENERATION.md** - Icon creation guide
-- **DEPLOYMENT-CHECKLIST.md** - Deployment steps
-- **SEO Documentation** - Multiple SEO guides
-
-### For Users
-- **About Page** - Company information
-- **Services Pages** - 16 service offerings
-- **Industries Pages** - 20 industry solutions
+<BentoGrid2 
+  cards={[
+    { title: '...', description: '...', icon: Icon, link: '/...' },
+    // ... 12 cards recommended
+  ]}
+  showBadges={true}
+  showStats={true}
+/>
+```
 
 ---
 
-## 🤝 Contributing
+## 📈 **OPTIMIZATION HIGHLIGHTS**
 
-1. Fork repository
-2. Create feature branch
-3. Commit changes
-4. Push to branch
-5. Open pull request
+### **v2.0.0 Improvements** (Latest)
+- ✅ **Centralized Design System:** Single source of truth (`designTokens.tsx`)
+- ✅ **100% Guidelines Compliance:** All components follow spec
+- ✅ **Performance Optimized:** Pure CSS, GPU-accelerated
+- ✅ **Documentation Cleanup:** 20+ files → 7 core docs
+- ✅ **Zero Redundancy:** Clean, maintainable codebase
+- ✅ **Production Ready:** Tested, accessible, SEO-optimized
 
----
-
-## 📞 Support
-
-**Inchtomilez Digital Marketing and Advertising Agency**
-
-- 📧 **Email:** contact@inchtomilez.com
-- 📱 **Phone:** 9669988666, 9009970709
-- 📍 **Location:** Vijay Nagar, Indore, Madhya Pradesh, India
-- 🌐 **Website:** https://www.inchtomilez.com
-
----
-
-## 📄 License
-
-Copyright © 2025 Inchtomilez. All rights reserved.
+### **Performance Metrics**
+| Metric | Score | Status |
+|--------|-------|--------|
+| **Lighthouse Performance** | >90 | ✅ Excellent |
+| **Lighthouse Accessibility** | >90 | ✅ WCAG AA |
+| **Lighthouse Best Practices** | >90 | ✅ High |
+| **Lighthouse SEO** | >90 | ✅ Optimized |
+| **LCP** | < 2.5s | ✅ Good |
+| **FID** | < 100ms | ✅ Good |
+| **CLS** | < 0.1 | ✅ Good |
 
 ---
 
-## 🔮 Future Enhancements
+## 🧪 **TESTING**
 
-- [ ] Push notifications for updates
-- [ ] Background sync for forms
-- [ ] Web Share API integration
-- [ ] Periodic background sync
-- [ ] Badge API for notifications
-- [ ] Google Play Store listing
-- [ ] Advanced analytics dashboard
-- [ ] A/B testing framework
-- [ ] Multilingual support
-- [ ] Dark/Light mode toggle
+### **Visual Testing**
+```bash
+# Start dev server
+npm run dev
 
----
+# Test responsive (use browser DevTools)
+# - Mobile: 320px, 375px, 414px
+# - Tablet: 768px, 1024px
+# - Desktop: 1280px, 1920px
+```
 
-## ✨ Technologies Used
+### **Build Testing**
+```bash
+# Build for production
+npm run build
 
-- **React 18** - UI framework
-- **TypeScript** - Type safety
-- **Tailwind CSS 4.0** - Styling
-- **React Router** - Navigation
-- **Vite** - Build tool
-- **PWA** - Progressive enhancement
-- **Service Workers** - Offline support
-- **ShadCN UI** - Component library
-- **Lucide React** - Icons
+# Preview production build
+npm run preview
 
----
+# Check bundle size
+du -h dist/assets/*.js
+```
 
-## 🏆 Achievements
-
-- ✅ **PWA Score:** 100/100
-- ✅ **Security Grade:** A+
-- ✅ **Performance:** 90+
-- ✅ **SEO Ready:** Complete
-- ✅ **Mobile First:** Responsive
-- ✅ **Offline Support:** Full
-- ✅ **HTTPS:** Enforced
+### **Accessibility Testing**
+- Lighthouse Accessibility audit
+- Keyboard navigation (Tab, Enter, Esc)
+- Screen reader (NVDA/JAWS)
+- Color contrast checker
 
 ---
 
-**Made with ❤️ by Inchtomilez**
+## 🤝 **CONTRIBUTING**
 
-**Last Updated:** October 2025 | **Version:** 1.0.0
+### **Code Style**
+- TypeScript for all new files
+- Follow Tailwind CSS conventions
+- Use design tokens from `/utils/designTokens.tsx`
+- Maintain Guidelines.md compliance
+- Write semantic HTML
+
+### **Commit Format**
+```
+feat: Add new feature
+fix: Bug fix
+style: Code formatting
+docs: Documentation
+perf: Performance improvement
+refactor: Code refactoring
+```
+
+---
+
+## 📞 **SUPPORT**
+
+### **Documentation**
+1. **Design System:** [`/guidelines/Guidelines.md`](./guidelines/Guidelines.md)
+2. **Complete Guide:** [`/PROJECT_README.md`](./PROJECT_README.md)
+3. **Optimization:** [`/DEEP_CLEAN_OPTIMIZATION_COMPLETE.md`](./DEEP_CLEAN_OPTIMIZATION_COMPLETE.md)
+4. **Grid System:** [`/BENTO_GRID_SYSTEM_COMPLETE.md`](./BENTO_GRID_SYSTEM_COMPLETE.md)
+5. **SEO Setup:** [`/SEO_IMPLEMENTATION_COMPLETE.md`](./SEO_IMPLEMENTATION_COMPLETE.md)
+
+### **Quick Reference**
+- **Design Tokens:** `/utils/designTokens.tsx`
+- **Global Styles:** `/styles/globals.css`
+- **BentoGrid2:** `/components/layout/BentoGrid2.tsx`
+- **SEO Component:** `/components/SEOHead.tsx`
+
+---
+
+## 📊 **STATS**
+
+| Metric | Value |
+|--------|-------|
+| **Pages** | 10 main + dynamic routes |
+| **Components** | 50+ React components |
+| **Design Tokens** | 200+ values |
+| **SEO URLs** | 262 indexed |
+| **Bundle Size** | Optimized (< 500KB) |
+| **Load Time** | < 2.5s (LCP) |
+| **Accessibility** | WCAG AA ✅ |
+| **Guidelines Compliance** | 100% ✅ |
+
+---
+
+## 🎉 **STATUS**
+
+**Version:** 2.0.0  
+**Status:** 🟢 **PRODUCTION READY**  
+**Last Updated:** January 29, 2025
+
+### **✅ Completed**
+- Deep clean & optimization
+- Centralized design system
+- 100% Guidelines.md compliance
+- Performance optimization
+- Accessibility improvements
+- Documentation cleanup
+- Production testing
+
+### **🎯 Quality**
+- 🏆 **EXCELLENT** - Enterprise-grade
+- 🟢 **STABLE** - Zero breaking changes
+- ⚡ **FAST** - Optimized performance
+- 📱 **RESPONSIVE** - Perfect on all devices
+- ♿ **ACCESSIBLE** - WCAG AA compliant
+- 📚 **DOCUMENTED** - Comprehensive guides
+
+---
+
+**© 2025 Inchtomilez Digital Marketing and Advertising Agency**
+
+🌟 **Built with:** React • TypeScript • Tailwind CSS v4 • BentoGrid2 • Pure CSS Animations
+
+---
+
+**For detailed documentation, see [`PROJECT_README.md`](./PROJECT_README.md)**

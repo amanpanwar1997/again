@@ -1,141 +1,53 @@
-/* ============================================
-   INCHTOMILEZ DESIGN SYSTEM - GLOBAL STYLES
-   ============================================
-   Theme: Dark Mode Only
-   Primary Font: Raleway
-   Color Scheme: Black background, White text, Yellow accents
-   Layout: Stacking sections (100vh, 100% width, 20px radius)
-   
-   🌐 GLOBAL ENFORCEMENT:
-   - All icons: 24px × 24px (white color)
-   - All badges: 20px height (10px font, 8px padding)
-   - Global vertical centering: Mobile-optimized
-   - Applies to ALL 42+ pages (main + services + industries + blogs)
-   ============================================ */
+@import url("https://fonts.googleapis.com/css2?family=Raleway:wght@400;500;600;700&display=swap");
 
-/* Import Raleway Font Family */
-@import url('https://fonts.googleapis.com/css2?family=Raleway:wght@100;200;300;400;500;600;700;800;900&display=swap');
-
-/* Dark Mode Variant */
 @custom-variant dark (&:is(.dark *));
 
-/* ============================================
-   CSS CUSTOM PROPERTIES (Design Tokens)
-   ============================================ */
 :root {
-  /* Mobile Viewport Height (Dynamic - handles collapsing browser bars) */
-  --viewport-height: 100vh;
-  
-  /* Typography */
-  --font-family: 'Raleway', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  --font-size-base: 16px;
-  --font-weight-light: 300;
-  --font-weight-normal: 400;
-  --font-weight-medium: 500;
-  --font-weight-semibold: 600;
-  --font-weight-bold: 700;
-  --line-height-base: 1.5;
-  --line-height-tight: 1.3;
-
-  /* Colors - Black & White Theme */
-  --color-black: #000000;
-  --color-white: #ffffff;
-  --color-gray-dark: #1a1a1a;
-  --color-gray-medium: #333333;
-  --color-gray-light: #a3a3a3;
-  
-  /* Accent Colors */
-  --color-yellow: #eab308;
-  --color-yellow-hover: #facc15;
-  
-  /* Opacity Variants */
-  --white-05: rgba(255, 255, 255, 0.05);
-  --white-10: rgba(255, 255, 255, 0.1);
-  --white-20: rgba(255, 255, 255, 0.2);
-  --white-30: rgba(255, 255, 255, 0.3);
-  --white-50: rgba(255, 255, 255, 0.5);
-  --white-80: rgba(255, 255, 255, 0.8);
-  
-  --yellow-10: rgba(234, 179, 8, 0.1);
-  --yellow-20: rgba(234, 179, 8, 0.2);
-  --yellow-30: rgba(234, 179, 8, 0.3);
-  --yellow-50: rgba(234, 179, 8, 0.5);
-
-  /* Semantic Colors */
-  --background: var(--color-black);
-  --foreground: var(--color-white);
-  --card: var(--color-black);
-  --card-foreground: var(--color-white);
-  --primary: var(--color-white);
-  --primary-foreground: var(--color-black);
-  --secondary: var(--color-gray-dark);
-  --secondary-foreground: var(--color-white);
-  --muted: var(--color-gray-medium);
-  --muted-foreground: var(--color-gray-light);
-  --accent: var(--color-yellow);
-  --accent-foreground: var(--color-black);
+  /* Inchtomilez Brand Colors */
+  --background: #000000;
+  --foreground: #ffffff;
+  --card: #0a0a0a;
+  --card-foreground: #ffffff;
+  --popover: #0a0a0a;
+  --popover-foreground: #ffffff;
+  --primary: #eab308;
+  --primary-foreground: #000000;
+  --secondary: #1f1f1f;
+  --secondary-foreground: #ffffff;
+  --muted: #333333;
+  --muted-foreground: #b3b3b3;
+  --accent: #eab308;
+  --accent-foreground: #000000;
   --destructive: #ef4444;
-  --destructive-foreground: var(--color-white);
-  
-  /* UI Elements */
-  --border: var(--white-10);
-  --border-hover: var(--white-30);
-  --input: transparent;
-  --input-background: var(--white-05);
-  --ring: var(--white-30);
-  
-  /* Border Radius */
-  --radius-sm: 0.375rem;    /* 6px */
-  --radius-md: 0.5rem;      /* 8px */
-  --radius-lg: 0.625rem;    /* 10px */
-  --radius-xl: 1.25rem;     /* 20px - for sections */
-  --radius-2xl: 1.5rem;     /* 24px */
-  
-  /* Spacing System (8px base) */
-  --spacing-xs: 0.5rem;     /* 8px */
-  --spacing-sm: 1rem;       /* 16px */
-  --spacing-md: 1.5rem;     /* 24px */
-  --spacing-lg: 2rem;       /* 32px */
-  --spacing-xl: 3rem;       /* 48px */
-  --spacing-2xl: 4rem;      /* 64px */
-  
-  /* Section Properties */
-  --section-height: 100vh;
-  --section-width: 100%;
-  --section-radius: var(--radius-xl);
-  --content-max-width: 80vw;
-  
-  /* Transitions */
-  --transition-fast: 150ms ease;
-  --transition-base: 300ms ease;
-  --transition-slow: 500ms ease;
-  
-  /* Shadows */
-  --shadow-glow-top: 
-    0 -5px 10px var(--white-50),
-    0 -10px 20px var(--white-30);
-  --shadow-card: 0 4px 6px rgba(0, 0, 0, 0.1);
-  --shadow-card-hover: 0 10px 20px rgba(0, 0, 0, 0.2);
-  
-  /* Gradient for Headings */
-  --gradient-heading: linear-gradient(45deg, #ff0000, #f15bb5, #fee440, #ff7f50, #6af500);
+  --destructive-foreground: #ffffff;
+  --border: rgba(255, 255, 255, 0.1);
+  --input: rgba(255, 255, 255, 0.1);
+  --input-background: transparent;
+  --switch-background: #1f1f1f;
+  --ring: #eab308;
+  --chart-1: #eab308;
+  --chart-2: #ffffff;
+  --chart-3: #b3b3b3;
+  --chart-4: #1f1f1f;
+  --chart-5: #0a0a0a;
+  --radius: 0.75rem;
+  --sidebar: #000000;
+  --sidebar-foreground: #ffffff;
+  --sidebar-primary: #eab308;
+  --sidebar-primary-foreground: #000000;
+  --sidebar-accent: #1f1f1f;
+  --sidebar-accent-foreground: #ffffff;
+  --sidebar-border: rgba(255, 255, 255, 0.1);
+  --sidebar-ring: #eab308;
 }
 
-/* Dynamic Viewport Height Support (iOS Safari, Chrome mobile) */
-@supports (height: 100dvh) {
-  :root {
-    --viewport-height: 100dvh;
-  }
-}
-
-/* ============================================
-   TAILWIND THEME INLINE
-   ============================================ */
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
   --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
   --color-primary: var(--primary);
   --color-primary-foreground: var(--primary-foreground);
   --color-secondary: var(--secondary);
@@ -149,877 +61,633 @@
   --color-border: var(--border);
   --color-input: var(--input);
   --color-input-background: var(--input-background);
+  --color-switch-background: var(--switch-background);
   --color-ring: var(--ring);
-  --radius-sm: var(--radius-sm);
-  --radius-md: var(--radius-md);
-  --radius-lg: var(--radius-lg);
-  --radius-xl: var(--radius-xl);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(
+    --sidebar-primary-foreground
+  );
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(
+    --sidebar-accent-foreground
+  );
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
 }
 
-/* ============================================
-   BASE STYLES
-   ============================================ */
 @layer base {
   * {
-    @apply border-border outline-ring/50;
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
+    @apply border-border;
   }
 
-  html {
-    font-size: var(--font-size-base);
-    scroll-behavior: smooth;
+  /* Focus styles - 2px solid yellow outline */
+  *:focus-visible {
+    outline: 2px solid #eab308;
+    outline-offset: 2px;
   }
 
-  html, body {
-    @apply bg-black text-white;
-    font-family: var(--font-family);
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    text-rendering: optimizeLegibility;
+  /* 🔒 DEPLOYMENT SECURITY: Disable text selection globally */
+  * {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    -webkit-touch-callout: none;
+  }
+
+  /* Allow selection for input fields and textareas */
+  input,
+  textarea,
+  [contenteditable="true"] {
+    -webkit-user-select: text;
+    -moz-user-select: text;
+    -ms-user-select: text;
+    user-select: text;
   }
 
   body {
-    min-height: 100vh;
-    overflow-x: hidden;
-    width: 100%;
-    position: relative;
+    @apply bg-black text-white;
+    font-family:
+      "Raleway",
+      system-ui,
+      -apple-system,
+      sans-serif;
+    font-weight: 400;
+    line-height: 1.5;
   }
 
-  /* Safe area insets for notched devices */
-  @supports (padding: max(0px)) {
-    body {
-      padding-left: env(safe-area-inset-left);
-      padding-right: env(safe-area-inset-right);
+  /* Hover color shift: #eab308 → #fbbf24 */
+  button:hover,
+  a:hover {
+    transition: all 200ms ease-in-out;
+  }
+
+  /* Default transitions */
+  * {
+    transition-timing-function: ease-in-out;
+    transition-duration: 200ms;
+  }
+}
+
+/**
+ * RALEWAY TYPOGRAPHY SYSTEM V2 (Refined)
+ * Base Font: Raleway
+ * Base Size: 16px
+ * Base Line Height: 1.5
+ */
+@layer base {
+  /* H1: 30px (1.875rem), Medium (500), Line Height 1.3, Letter Spacing -0.01em */
+  h1 {
+    font-size: 1.875rem;
+    font-weight: 500;
+    line-height: 1.3;
+    letter-spacing: -0.01em;
+  }
+
+  /* H2: 22px (1.375rem), Bold (700), Line Height 1.3, Animated Gradient */
+  h2 {
+    font-family: 'Raleway', system-ui, -apple-system, sans-serif;
+    font-size: 1.375rem;
+    font-weight: 700;
+    line-height: 1.3;
+    letter-spacing: -0.01em;
+    background: linear-gradient(
+      135deg,
+      #ef4444 0%,
+      #ec4899 25%,
+      #a855f7 50%,
+      #f59e0b 75%,
+      #dc2626 100%
+    );
+    background-size: 300% 300%;
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: gradient-shimmer 8s ease-in-out infinite;
+  }
+
+  /* H3: 22px (1.375rem), Medium (500), Line Height 1.4 */
+  h3 {
+    font-size: 1.375rem;
+    font-weight: 500;
+    line-height: 1.4;
+    letter-spacing: 0;
+  }
+
+  /* H4: 18px (1.125rem), Medium (500), Line Height 1.4 */
+  h4 {
+    font-size: 1.125rem;
+    font-weight: 500;
+    line-height: 1.4;
+    letter-spacing: 0;
+  }
+
+  /* Body (P): 15px (0.9375rem), Regular (400), Line Height 1.6 */
+  p {
+    font-size: 0.9375rem;
+    font-weight: 400;
+    line-height: 1.6;
+    letter-spacing: 0;
+  }
+
+  /* Small Text / Label: 13px (0.8125rem), Regular (400), Line Height 1.6 */
+  small,
+  label {
+    font-size: 0.8125rem;
+    font-weight: 400;
+    line-height: 1.6;
+    letter-spacing: 0;
+  }
+
+  /* Button: 15px (0.9375rem), SemiBold (600), Line Height 1.5 */
+  button {
+    font-size: 0.9375rem;
+    font-weight: 600;
+    line-height: 1.5;
+    letter-spacing: 0;
+  }
+
+  /* Input/Textarea: 15px (0.9375rem), Regular (400), Line Height 1.5 */
+  input,
+  textarea {
+    font-size: 0.9375rem;
+    font-weight: 400;
+    line-height: 1.5;
+    letter-spacing: 0;
+  }
+}
+
+/* Mobile typography adjustments (≤768px) */
+@media (max-width: 768px) {
+  h1 {
+    font-size: 1.625rem; /* 26px */
+  }
+
+  h2 {
+    font-size: 1.25rem; /* 20px */
+    /* Gradient animation already applied from base h2 */
+  }
+
+  h3 {
+    font-size: 1.25rem; /* 20px */
+  }
+
+  h4 {
+    font-size: 1rem; /* 16px */
+  }
+
+  p {
+    font-size: 0.875rem; /* 14px */
+  }
+
+  small,
+  label {
+    font-size: 0.75rem; /* 12px */
+  }
+
+  button {
+    font-size: 0.875rem; /* 14px */
+  }
+
+  input,
+  textarea {
+    font-size: 0.875rem; /* 14px */
+  }
+}
+
+/* Inchtomilez Component Utilities - Pure Black Theme */
+@layer components {
+  /* Pure Black Card - Matte black with subtle shadow + Guidelines.md p-6 */
+  .glass {
+    @apply bg-[#0a0a0a] border border-white/10 rounded-xl p-6;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+    transition: all 200ms ease-in-out;
+  }
+
+  .glass:hover {
+    @apply border-white/20;
+    box-shadow: 0 4px 12px rgba(234, 179, 8, 0.15);
+  }
+
+  /* Strong Black Card - Deeper shadow, subtle yellow glow on hover + Guidelines.md p-6 */
+  .glass-strong {
+    @apply bg-[#0a0a0a] border border-white/20 rounded-xl p-6;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6);
+    transition: all 200ms ease-in-out;
+  }
+
+  .glass-strong:hover {
+    @apply border-yellow-500/30;
+    box-shadow: 0 6px 16px rgba(234, 179, 8, 0.2);
+  }
+
+  /* Black Card with Padding - Guidelines.md p-6 (24px) = "Card padding" */
+  .glass-card {
+    @apply bg-[#0a0a0a] border border-white/10 rounded-xl p-6;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+    transition: all 200ms ease-in-out;
+  }
+
+  .glass-card:hover {
+    @apply border-white/20;
+    box-shadow: 0 4px 12px rgba(234, 179, 8, 0.15);
+  }
+
+  /* Text gradient - white to yellow gradient */
+  .text-gradient {
+    @apply bg-gradient-to-br from-white to-yellow-500 bg-clip-text text-transparent;
+  }
+
+  /* Gradient shimmer animation (used by h2 base styles) */
+  @keyframes gradient-shimmer {
+    0%, 100% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
     }
   }
 
-  /* Prevent horizontal overflow on all elements */
-  #root {
-    overflow-x: hidden;
+  /* Text muted - gray-400 */
+  .text-muted {
+    @apply text-gray-400;
+  }
+
+  /* Text accent - yellow-500 */
+  .text-accent {
+    @apply text-yellow-500;
+  }
+
+  /* Safe container - max 1280px */
+  .safe-container {
     width: 100%;
-    max-width: 100vw;
+    max-width: 1280px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 1rem;
+    padding-right: 1rem;
   }
 
-  /* Ensure all images are responsive */
-  img {
-    max-width: 100%;
-    height: auto;
+  @media (min-width: 768px) {
+    .safe-container {
+      padding-left: 1.5rem;
+      padding-right: 1.5rem;
+    }
   }
 
-  /* Prevent text overflow */
-  * {
-    word-wrap: break-word;
-    overflow-wrap: break-word;
+  @media (min-width: 1024px) {
+    .safe-container {
+      padding-left: 2rem;
+      padding-right: 2rem;
+    }
   }
 
-  /* Typography defaults */
-  h1, h2, h3, h4, h5, h6, p, div, span, label, button, input, textarea, select {
-    color: var(--color-white);
-  }
-}
-
-/* ============================================
-   TYPOGRAPHY
-   ============================================
-   Note: Do NOT use Tailwind font-size, font-weight, 
-   or line-height classes unless specifically requested.
-   These base styles handle all typography automatically.
-   ============================================ */
-@layer base {
-  a {
-    color: var(--color-white);
-    text-decoration: none;
-    transition: color var(--transition-base);
+  /* Container - responsive central grid */
+  .container {
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 1rem;
+    padding-right: 1rem;
   }
 
-  a:hover {
-    color: var(--color-yellow);
+  @media (min-width: 768px) {
+    .container {
+      max-width: 768px;
+      padding-left: 1.5rem;
+      padding-right: 1.5rem;
+    }
   }
-}
 
-/* ============================================
-   HEADING & PARAGRAPH FONT SIZES
-   ============================================ */
-h1 {
-  font-size: 29px;
-  line-height: var(--line-height-tight);
-}
-
-h2 {
-  font-size: 25px !important;
-  line-height: var(--line-height-tight);
-}
-
-h3 {
-  font-size: 16px;
-  line-height: var(--line-height-tight);
-}
-
-h4 {
-  font-size: 13px;
-  line-height: var(--line-height-tight);
-}
-
-h5 {
-  font-size: 10px;
-  line-height: var(--line-height-tight);
-}
-
-h6 {
-  font-size: 8px;
-  line-height: var(--line-height-tight);
-}
-
-p {
-  font-size: 13px;
-  line-height: var(--line-height-base);
-}
-
-/* ============================================
-   DIV & SPAN TYPOGRAPHY - GLOBAL CONSISTENCY
-   ============================================
-   Ensures text-based divs/spans have consistent
-   font sizing across entire website.
-   Uses smart selectors to avoid breaking components.
-   ============================================ */
-
-/* Base font size for divs/spans WITHOUT specific classes */
-div:not([class*="text-"]):not([class*="h-"]):not([class*="w-"]):not([class*="gap-"]):not([class*="flex"]):not([class*="grid"]),
-span:not([class*="text-"]):not([class*="h-"]):not([class*="w-"]):not([class*="gap-"]):not([class*="flex"]) {
-  font-size: 13px;
-  line-height: var(--line-height-base);
-  font-family: var(--font-family);
-}
-
-/* Labels / Categories / Small Text (compact, uppercase style) */
-div[class*="mb-1"],
-div[class*="text-sm"],
-span[class*="text-sm"],
-span[class*="uppercase"],
-.label-text,
-.category-text {
-  font-size: 11px !important;
-  letter-spacing: 0.5px !important;
-  line-height: 1.4 !important;
-}
-
-/* Metrics / Numbers / Stats (slightly larger, prominent) */
-div[class*="metric"],
-div[class*="stat"],
-span[class*="metric"],
-span[class*="stat"],
-.metric-text,
-.stat-text,
-[data-metric] {
-  font-size: 15px !important;
-  font-weight: 600 !important;
-  line-height: 1.3 !important;
-}
-
-/* Subtext / Helper text / Descriptions (same as body) */
-div[class*="text-gray-400"],
-div[class*="text-gray-300"],
-span[class*="text-gray-400"],
-span[class*="text-gray-300"],
-.subtext,
-.helper-text {
-  font-size: 13px !important;
-  line-height: var(--line-height-base) !important;
-}
-
-/* Card content text - ensure consistent sizing */
-[data-slot="card-content"] div,
-[data-slot="card-content"] span,
-.card div,
-.card span {
-  font-size: 13px !important;
-  line-height: var(--line-height-base) !important;
-}
-
-/* Exception: Headings inside divs maintain their sizes */
-div h1, div h3, div h4, div h5, div h6,
-span h1, span h3, span h4, span h5, span h6 {
-  font-size: inherit !important;
-  line-height: inherit !important;
-}
-
-/* h2 elements ALWAYS use their defined size (25px) */
-div h2, span h2 {
-  font-size: 25px !important;
-  line-height: var(--line-height-tight) !important;
-}
-
-/* Exception: Buttons and interactive elements keep their styles */
-button div,
-button span,
-[data-slot="button"] div,
-[data-slot="button"] span,
-a div,
-a span {
-  font-size: inherit !important;
-  line-height: inherit !important;
-}
-
-/* ============================================
-   ANIMATED GRADIENT HEADINGS (H1 & H2)
-   ============================================ */
-h1, h2 {
-  background: var(--gradient-heading);
-  background-size: 500%;
-  background-clip: text;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  animation: gradientShift 6s ease infinite;
-}
-
-@keyframes gradientShift {
-  0%, 100% {
-    background-position: 0% 50%;
+  @media (min-width: 1024px) {
+    .container {
+      max-width: 1024px;
+      padding-left: 2rem;
+      padding-right: 2rem;
+    }
   }
-  50% {
-    background-position: 100% 50%;
+
+  @media (min-width: 1280px) {
+    .container {
+      max-width: 1280px;
+    }
   }
 }
 
-/* ============================================
-   SECTIONS - STACKING EFFECT
-   ============================================ */
-section {
-  position: sticky;
-  top: 0;
-  height: var(--section-height);
-  width: var(--section-width);
-  background: var(--color-black);
-  border-radius: var(--section-radius);
-  overflow: hidden;
-}
+/* Enterprise Typography Utilities */
+@layer utilities {
+  /* Display Headings - Hero sections only */
+  .text-display {
+    font-size: 2.5rem; /* 40px */
+    line-height: 1.1;
+    font-weight: 500;
+    letter-spacing: -0.02em;
+  }
 
-/* ============================================
-   GLOBAL VERTICAL CENTERING - MOBILE OPTIMIZED v5.2
-   ============================================
-   Automatically centers content in ALL StackingSections
-   Applies to ALL 42+ pages
-   Mobile-first with safe area insets
-   ============================================ */
+  @media (min-width: 768px) {
+    .text-display {
+      font-size: 3.5rem; /* 56px */
+    }
+  }
 
-/* Mobile: Optimized padding + safe areas + dynamic viewport */
-section > div:first-child:not([class*="video"]):not([class*="absolute"]) {
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  min-height: var(--viewport-height) !important;
-  padding-left: max(1rem, env(safe-area-inset-left)) !important;
-  padding-right: max(1rem, env(safe-area-inset-right)) !important;
-  padding-top: env(safe-area-inset-top) !important;
-  padding-bottom: env(safe-area-inset-bottom) !important;
-}
+  @media (min-width: 1024px) {
+    .text-display {
+      font-size: 4.5rem; /* 72px */
+    }
+  }
 
-/* Desktop: Increased horizontal padding */
-@media (min-width: 768px) {
-  section > div:first-child:not([class*="video"]):not([class*="absolute"]) {
-    padding-left: max(4rem, env(safe-area-inset-left)) !important;
-    padding-right: max(4rem, env(safe-area-inset-right)) !important;
+  /* Section Headings - Major sections */
+  .text-section {
+    font-size: 1.875rem; /* 30px */
+    line-height: 1.2;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+
+  @media (min-width: 768px) {
+    .text-section {
+      font-size: 2.25rem; /* 36px */
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .text-section {
+      font-size: 3rem; /* 48px */
+    }
+  }
+
+  /* Lead text - Larger body text */
+  .text-lead {
+    font-size: 1.125rem; /* 18px */
+    line-height: 1.6;
+    font-weight: 400;
+  }
+
+  @media (min-width: 768px) {
+    .text-lead {
+      font-size: 1.25rem; /* 20px */
+    }
+  }
+
+  /* AUTO CAROUSEL ANIMATION */
+  @keyframes scroll-x {
+    0% {
+      transform: translateX(0);
+    }
+    100% {
+      transform: translateX(-50%);
+    }
+  }
+
+  .animate-scroll-x {
+    animation: scroll-x 30s linear infinite;
+  }
+
+  .animate-scroll-x-fast {
+    animation: scroll-x 20s linear infinite;
+  }
+
+  .animate-scroll-x-slow {
+    animation: scroll-x 45s linear infinite;
+  }
+
+  /* Pause on hover */
+  .animate-scroll-x:hover,
+  .animate-scroll-x-fast:hover,
+  .animate-scroll-x-slow:hover {
+    animation-play-state: paused;
+  }
+
+  /* BENTO GRID SYSTEM - Per Guidelines.md */
+  /* Guidelines.md: 1rem → 1.5rem → 2rem = gap-4 → gap-6 → gap-8 */
+  .bento-grid {
+    @apply grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 lg:gap-8;
+  }
+
+  .bento-item {
+    @apply bg-[#0a0a0a] border border-white/10 rounded-xl p-6 flex flex-col justify-between;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+    transition: all 200ms ease-in-out;
+  }
+
+  .bento-item:hover {
+    @apply border-white/20;
+    box-shadow: 0 4px 12px rgba(234, 179, 8, 0.15);
+  }
+
+  .bento-item-large {
+    @apply col-span-2 row-span-2;
+  }
+
+  .bento-item-wide {
+    @apply col-span-2;
+  }
+
+  .bento-item-tall {
+    @apply row-span-2;
+  }
+
+  /* Compact Card Variants */
+  .card-compact {
+    @apply p-4;
+  }
+
+  .card-default {
+    @apply p-6;
+  }
+
+  .card-spacious {
+    @apply p-8;
+  }
+
+  /* CAROUSEL MASK EFFECT - Fade edges for smooth scrolling */
+  .carousel-mask {
+    mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+    -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+  }
+
+  /* SCROLLBAR HIDE - For mobile touch scroll */
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* SNAP SCROLL - For carousel items */
+  .snap-x {
+    scroll-snap-type: x mandatory;
+  }
+
+  .snap-mandatory {
+    scroll-snap-type: x mandatory;
+  }
+
+  .snap-start {
+    scroll-snap-align: start;
+  }
+
+  .snap-center {
+    scroll-snap-align: center;
+  }
+
+  /* UNIFIED ICON SIZING SYSTEM */
+  .icon-xs {
+    width: 16px;
+    height: 16px;
+  }
+
+  .icon-sm {
+    width: 20px;
+    height: 20px;
+  }
+
+  .icon-md {
+    width: 24px;
+    height: 24px;
+  }
+
+  .icon-lg {
+    width: 32px;
+    height: 32px;
+  }
+
+  .icon-xl {
+    width: 48px;
+    height: 48px;
+  }
+
+  /* CUSTOM SCROLLBAR - For dropdown menus */
+  .custom-scrollbar {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(234, 179, 8, 0.3) transparent;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    background: rgba(234, 179, 8, 0.3);
+    border-radius: 10px;
+    transition: background 200ms ease;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: rgba(234, 179, 8, 0.5);
+  }
+
+  /* UNIFIED BUTTON SYSTEM */
+  .btn-primary {
+    @apply bg-yellow-500 text-black px-6 py-3 rounded-lg;
+    font-family: 'Raleway', sans-serif;
+    font-weight: 600;
+    font-size: 0.9375rem;
+    transition: all 200ms ease-in-out;
+    box-shadow: 0 2px 8px rgba(234, 179, 8, 0.3);
+  }
+
+  .btn-primary:hover {
+    @apply bg-yellow-400;
+    box-shadow: 0 4px 16px rgba(234, 179, 8, 0.4);
+    transform: translateY(-1px);
+  }
+
+  .btn-secondary {
+    @apply bg-[#0a0a0a] text-white border border-white/20 px-6 py-3 rounded-lg;
+    font-family: 'Raleway', sans-serif;
+    font-weight: 600;
+    font-size: 0.9375rem;
+    transition: all 200ms ease-in-out;
+  }
+
+  .btn-secondary:hover {
+    @apply border-yellow-500/50 text-yellow-500;
+  }
+
+  .btn-compact {
+    @apply px-5 py-2.5;
+    font-size: 0.875rem;
+  }
+
+  /* 8PX GRID SPACING SCALE */
+  .spacing-4 {
+    @apply p-1;  /* 4px */
+  }
+
+  .spacing-8 {
+    @apply p-2;  /* 8px */
+  }
+
+  .spacing-12 {
+    @apply p-3;  /* 12px */
+  }
+
+  .spacing-16 {
+    @apply p-4;  /* 16px */
+  }
+
+  .spacing-24 {
+    @apply p-6;  /* 24px */
+  }
+
+  .spacing-32 {
+    @apply p-8;  /* 32px */
+  }
+
+  .spacing-48 {
+    @apply p-12; /* 48px */
+  }
+
+  /* CUSTOM SCROLLBAR - For dropdown menus */
+  .dropdown-scroll::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  .dropdown-scroll::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 3px;
+  }
+
+  .dropdown-scroll::-webkit-scrollbar-thumb {
+    background: rgba(234, 179, 8, 0.3);
+    border-radius: 3px;
+  }
+
+  .dropdown-scroll::-webkit-scrollbar-thumb:hover {
+    background: rgba(234, 179, 8, 0.5);
+  }
+
+  /* Firefox scrollbar */
+  .dropdown-scroll {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(234, 179, 8, 0.3) rgba(255, 255, 255, 0.05);
   }
 }
 
-/* Content width: Mobile 90vw, Desktop 80vw */
-section > div:first-child > div {
-  width: 90vw !important;
-  max-width: 90vw !important;
-}
-
-@media (min-width: 768px) {
-  section > div:first-child > div {
-    width: 80vw !important;
-    max-width: 80vw !important;
-  }
-}
-
-/* ============================================
-   ICON STYLING - GLOBAL ENFORCEMENT
-   ============================================
-   All icons: 24px × 24px, white color
-   Applies to ALL 42+ pages
-   ============================================ */
-
-/* Target all SVG icons globally */
-svg {
-  width: 24px !important;
-  height: 24px !important;
-  min-width: 24px !important;
-  min-height: 24px !important;
-  color: white !important;
-  flex-shrink: 0 !important;
-}
-
-/* Exception: Icons in logo/header may have custom sizing */
-header svg[class*="logo"],
-[data-logo] svg {
-  width: auto !important;
-  height: auto !important;
-}
-
-/* Exception: Floating CTA icons slightly larger */
-[data-floating-cta] svg {
-  width: 28px !important;
-  height: 28px !important;
-}
-
-/* ============================================
-   BADGE STYLING - GLOBAL ENFORCEMENT
-   ============================================
-   All badges: 20px height, 10px font, 8px padding
-   SMALL compact size across all pages
-   ============================================ */
-
-/* Target ALL badge components globally */
-[data-slot="badge"],
-.badge,
-span[class*="rounded-full"][class*="border"][class*="px-"],
-span[class*="rounded-full"][class*="bg-"][class*="text-"],
-div[class*="rounded-full"][class*="border"][class*="px-"][class*="text-"],
-span[class*="inline-flex"][class*="rounded-"] {
-  height: 20px !important;
-  padding: 0 8px !important;
-  font-size: 10px !important;
-  line-height: 20px !important;
-  display: inline-flex !important;
-  align-items: center !important;
-  white-space: nowrap !important;
-}
-
-/* ============================================
-   ICON CONTAINER UTILITIES
-   ============================================
-   Standardized icon container sizes
-   ============================================ */
-
-/* Large (Desktop) - Main feature cards */
-.icon-container-lg {
-  width: 64px !important;
-  height: 64px !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  border-radius: 50% !important;
-  background: rgba(255, 255, 255, 0.05) !important;
-  border: 1px solid rgba(255, 255, 255, 0.1) !important;
-}
-
-/* Medium - Secondary cards */
-.icon-container-md {
-  width: 48px !important;
-  height: 48px !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  border-radius: 50% !important;
-  background: rgba(255, 255, 255, 0.05) !important;
-  border: 1px solid rgba(255, 255, 255, 0.1) !important;
-}
-
-/* Small - Compact layouts */
-.icon-container-sm {
-  width: 40px !important;
-  height: 40px !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  border-radius: 50% !important;
-  background: rgba(255, 255, 255, 0.05) !important;
-  border: 1px solid rgba(255, 255, 255, 0.1) !important;
-}
-
-/* ============================================
-   BUTTONS - BASE STYLES
-   ============================================ */
-button {
-  cursor: pointer;
-  font-family: var(--font-family);
-  transition: all var(--transition-base);
-}
-
-button:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-
-/* ============================================
-   INPUTS & FORMS
-   ============================================ */
-input,
-textarea,
-select {
-  font-family: var(--font-family);
-  background: var(--input-background);
-  border: 1px solid var(--border);
-  color: var(--color-white);
-  padding: 12px 16px;
-  border-radius: var(--radius-md);
-  transition: all var(--transition-base);
-}
-
-input:focus,
-textarea:focus,
-select:focus {
-  outline: none;
-  border-color: var(--color-yellow);
-  box-shadow: 0 0 0 2px var(--yellow-20);
-}
-
-input::placeholder,
-textarea::placeholder {
-  color: var(--color-gray-light);
-}
-
-/* ============================================
-   CARDS
-   ============================================ */
-.card {
-  background: var(--color-black);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-lg);
-  padding: 20px;
-  transition: all var(--transition-base);
-}
-
-.card:hover {
-  border-color: var(--border-hover);
-  transform: scale(1.05);
-  box-shadow: var(--shadow-card-hover);
-}
-
-/* ============================================
-   ANIMATIONS
-   ============================================ */
-
-/* Fade In */
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.fade-in {
-  animation: fadeIn var(--transition-base) ease-out;
-}
-
-/* Scale In */
-@keyframes scaleIn {
-  from {
-    opacity: 0;
-    transform: scale(0.9);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
-
-.scale-in {
-  animation: scaleIn var(--transition-base) ease-out;
-}
-
-/* Slide Up */
-@keyframes slideUp {
-  from {
-    opacity: 0;
-    transform: translateY(30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.slide-up {
-  animation: slideUp var(--transition-slow) ease-out;
-}
-
-/* ============================================
-   ACCESSIBILITY
-   ============================================ */
-
-/* Reduced motion for users who prefer it */
+/* Reduced motion support */
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
   *::after {
     animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
   }
-}
-
-/* High contrast mode support */
-@media (prefers-contrast: high) {
-  :root {
-    --border: var(--white-30);
-  }
-}
-
-/* ============================================
-   PRINT STYLES
-   ============================================ */
-@media print {
-  body {
-    background: white;
-    color: black;
-  }
-  
-  section {
-    page-break-inside: avoid;
-    box-shadow: none;
-    border: 1px solid #ccc;
-  }
-}
-
-/* ============================================
-   TYPOGRAPHY UTILITY CLASSES
-   ============================================
-   Reusable classes for consistent typography
-   across all pages. Use these instead of inline
-   font-size declarations.
-   ============================================ */
-
-/* Hero text (Home page hero heading) */
-.text-hero {
-  font-size: 40px;
-  font-weight: 700;
-  line-height: 1.2;
-  font-family: var(--font-family);
-}
-
-/* Large headings */
-.text-heading {
-  font-size: 29px;
-  font-weight: 700;
-  line-height: var(--line-height-tight);
-}
-
-/* Subheadings */
-.text-subheading {
-  font-size: 21px;
-  font-weight: 600;
-  line-height: var(--line-height-tight);
-}
-
-/* Body text (default) */
-.text-body {
-  font-size: 13px;
-  font-weight: 400;
-  line-height: var(--line-height-base);
-}
-
-/* Small text (labels, captions) */
-.text-small {
-  font-size: 11px;
-  font-weight: 400;
-  line-height: 1.4;
-}
-
-/* Metrics/Stats text */
-.text-metric {
-  font-size: 15px;
-  font-weight: 600;
-  line-height: 1.3;
-}
-
-/* Navigation & Menu Items */
-.text-nav {
-  font-size: 16px !important;
-  font-weight: 500 !important;
-  line-height: 1.5 !important;
-}
-
-/* Menu Category Labels */
-.text-menu-category {
-  font-size: 12px !important;
-  font-weight: 600 !important;
-  text-transform: uppercase !important;
-  letter-spacing: 0.1em !important;
-}
-
-/* Menu Links */
-.text-menu-link {
-  font-size: 14px !important;
-  font-weight: 400 !important;
-  line-height: 1.5 !important;
-}
-
-/* Badge Text (10px) */
-.text-badge {
-  font-size: 10px !important;
-  font-weight: 500 !important;
-  line-height: 20px !important;
-}
-
-/* Tech Stack Labels */
-.text-tech-category {
-  font-size: 10px !important;
-  font-weight: 500 !important;
-}
-
-.text-tech-name {
-  font-size: 11px !important;
-  font-weight: 400 !important;
-}
-
-/* Extra Large (404 pages, special displays) */
-.text-display {
-  font-size: 120px !important;
-  font-weight: 900 !important;
-  line-height: 1 !important;
-}
-
-/* Large Stats/Metrics */
-.text-stat-large {
-  font-size: 32px !important;
-  font-weight: 700 !important;
-  line-height: 1 !important;
-}
-
-/* Medium Stats */
-.text-stat-medium {
-  font-size: 24px !important;
-  font-weight: 600 !important;
-  line-height: 1.2 !important;
-}
-
-/* ============================================
-   GLOBAL ICON STYLING ENFORCEMENT v2.0
-   ============================================
-   REMOVES ALL YELLOW CIRCULAR BACKGROUNDS
-   Enforces white/transparent backgrounds only
-   ============================================ */
-
-/* Target ALL yellow background icon containers - REMOVE THEM */
-div[class*="bg-yellow"][class*="rounded-full"]:has(svg),
-div[class*="bg-yellow"][class*="rounded-"]:has(svg),
-div[class*="rounded-full"][class*="bg-yellow"]:has(svg),
-div[class*="rounded-"][class*="bg-yellow"]:has(svg),
-div[class*="border-yellow"][class*="rounded-full"]:has(svg),
-div[class*="border-yellow"][class*="rounded-"]:has(svg) {
-  background: transparent !important;
-  background-color: transparent !important;
-  border-color: rgba(255, 255, 255, 0.1) !important;
-}
-
-/* Exception: Contact info icons in footer can keep yellow */
-div[class*="bg-yellow"][class*="rounded-full"]:has(svg[class*="text-yellow"]) {
-  background: rgba(234, 179, 8, 0.1) !important;
-  border-color: rgba(234, 179, 8, 0.2) !important;
-}
-
-/* Exception: Floating CTA buttons keep yellow background */
-[data-floating-cta] {
-  background: #eab308 !important;
-}
-
-[data-floating-cta]:hover {
-  background: #facc15 !important;
-}
-
-/* ============================================
-   BUTTON STYLING - GLOBAL ENFORCEMENT
-   ============================================ */
-
-/* Primary button (yellow) */
-.btn-primary {
-  background: #eab308 !important;
-  color: #000 !important;
-  border-radius: 9999px !important;
-  padding: 24px 32px !important;
-  font-size: 16px !important;
-  font-weight: 600 !important;
-  transition: all 0.3s ease !important;
-}
-
-.btn-primary:hover {
-  background: #facc15 !important;
-}
-
-/* ============================================
-   MOBILE OPTIMIZATIONS - v5.2 ENHANCED
-   ============================================
-   Touch-optimized, safe area aware, better readability
-   ============================================ */
-
-/* Smooth Touch Scrolling */
-* {
-  -webkit-overflow-scrolling: touch;
-  scroll-behavior: smooth;
-}
-
-/* Mobile Tap Highlight */
-* {
-  -webkit-tap-highlight-color: rgba(234, 179, 8, 0.1);
-}
-
-/* Mobile Text Selection */
-::selection {
-  background-color: rgba(234, 179, 8, 0.3);
-  color: #fff;
-}
-
-::-moz-selection {
-  background-color: rgba(234, 179, 8, 0.3);
-  color: #fff;
-}
-
-/* Mobile Font Size Adjustments - Better Readability */
-@media (max-width: 640px) {
-  html {
-    font-size: 15px; /* Increased from 14px for better readability */
-  }
-  
-  h1 {
-    font-size: 28px; /* Increased from 26px */
-    line-height: 1.2 !important;
-  }
-  
-  h2 {
-    font-size: 24px !important; /* Increased from 22px */
-    line-height: 1.3 !important;
-  }
-  
-  h3 {
-    font-size: 18px; /* Increased from 15px */
-    line-height: 1.4 !important;
-  }
-  
-  p, div, span {
-    font-size: 15px !important; /* Increased from 13px */
-    line-height: 1.6 !important;
-  }
-  
-  /* Mobile typography utilities */
-  .text-hero {
-    font-size: 28px !important;
-  }
-  
-  .text-heading {
-    font-size: 24px !important;
-  }
-  
-  .text-subheading {
-    font-size: 18px !important;
-  }
-  
-  .text-body {
-    font-size: 15px !important;
-  }
-  
-  .text-small {
-    font-size: 13px !important; /* Increased from 11px */
-  }
-}
-
-/* Mobile Touch Targets (WCAG 2.1 AAA) */
-@media (max-width: 768px) {
-  button,
-  a,
-  [role="button"] {
-    min-height: 44px !important;
-    min-width: 44px !important;
-  }
-  
-  /* Smaller minimum for badges */
-  .badge,
-  [data-slot="badge"] {
-    min-height: 32px !important;
-  }
-}
-
-/* Mobile Grid Gaps - Optimized Spacing */
-@media (max-width: 640px) {
-  .grid {
-    gap: 12px !important;
-  }
-  
-  .grid-cols-1 {
-    gap: 12px !important;
-  }
-}
-
-/* Mobile Section Heights - Dynamic Viewport */
-@media (max-width: 640px) {
-  section {
-    min-height: var(--viewport-height);
-  }
-}
-
-/* iOS Safari Specific Fix */
-@supports (-webkit-touch-callout: none) {
-  .min-h-screen {
-    min-height: -webkit-fill-available;
-  }
-}
-
-/* Horizontal Carousel Mobile Optimization */
-@media (max-width: 768px) {
-  .overflow-x-auto {
-    -webkit-overflow-scrolling: touch !important;
-    scroll-behavior: smooth !important;
-    scrollbar-width: none !important;
-    -ms-overflow-style: none !important;
-    /* Edge bleed for full-width carousel effect */
-    margin-left: -1rem !important;
-    margin-right: -1rem !important;
-    padding-left: 1rem !important;
-    padding-right: 1rem !important;
-  }
-  
-  .overflow-x-auto::-webkit-scrollbar {
-    display: none !important;
-  }
-}
-
-/* Mobile Accordion Optimization */
-@media (max-width: 768px) {
-  [data-radix-accordion-item] {
-    margin-bottom: 12px !important;
-    border-radius: 12px !important;
-  }
-  
-  [data-radix-accordion-trigger] {
-    padding: 16px !important;
-    min-height: 56px !important;
-    font-size: 15px !important;
-  }
-  
-  [data-radix-accordion-content] {
-    padding: 16px !important;
-    font-size: 14px !important;
-    line-height: 1.6 !important;
-  }
-}
-
-/* ============================================
-   TIMELINE SCROLLBAR HIDING
-   ============================================
-   Hides scrollbars in timeline components
-   while maintaining scroll functionality
-   ============================================ */
-
-/* Hide scrollbar for WebKit browsers (Chrome, Safari, Edge) */
-.overflow-y-auto::-webkit-scrollbar {
-  display: none;
-}
-
-/* Hide scrollbar for Firefox */
-.overflow-y-auto {
-  scrollbar-width: none;
-}
-
-/* Hide scrollbar for IE and Edge legacy */
-.overflow-y-auto {
-  -ms-overflow-style: none;
 }

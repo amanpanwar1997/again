@@ -1,184 +1,173 @@
-import { useEffect, lazy, Suspense } from 'react';
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-import { HelmetProvider } from 'react-helmet-async';
-import Header from './components/Header';
-import Footer from './components/Footer';
-import ScrollToTop from './components/ScrollToTop';
-import FloatingCTA from './components/FloatingCTA';
-import BackgroundMusic from './components/BackgroundMusic';
-import PWAInstallPrompt from './components/PWAInstallPrompt';
-import { registerServiceWorker, trackInstallation } from './utils/pwaRegister';
-import { enforceSecureConnection, preventClickjacking, checkBrowserSecurity } from './utils/securityHelpers';
-import { initPerformanceOptimizations } from './utils/performanceOptimizations';
+import { useState, lazy, Suspense, useEffect } from 'react';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { Bot } from 'lucide-react';
+import { Navigation } from './components/Navigation';
+import { Footer } from './components/Footer';
+import { AnimatedCursor } from './components/AnimatedCursor';
 
-// Loading fallback component
-const PageLoader = () => (
-  <div className="min-h-screen bg-black flex items-center justify-center">
-    <div className="text-center">
-      <div className="w-16 h-16 border-4 border-yellow-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-      <p className="text-white">Loading...</p>
+// Lazy load all pages for better performance
+const HomePage = lazy(() => import('./components/pages/HomePage').then(module => ({ default: module.HomePage })));
+const AboutPage = lazy(() => import('./components/pages/AboutPage').then(module => ({ default: module.AboutPage })));
+const ServicesPage = lazy(() => import('./components/pages/ServicesPage').then(module => ({ default: module.ServicesPage })));
+const ServiceDetailPage = lazy(() => import('./components/pages/ServiceDetailPage').then(module => ({ default: module.ServiceDetailPage })));
+const IndustriesPage = lazy(() => import('./components/pages/IndustriesPage').then(module => ({ default: module.IndustriesPage })));
+const IndustryDetailPage = lazy(() => import('./components/pages/IndustryDetailPage').then(module => ({ default: module.IndustryDetailPage })));
+const BlogsPage = lazy(() => import('./components/pages/BlogsPage').then(module => ({ default: module.BlogsPage })));
+const BlogDetailPage = lazy(() => import('./components/pages/BlogDetailPage').then(module => ({ default: module.BlogDetailPage })));
+const FAQsPage = lazy(() => import('./components/pages/FAQsPage').then(module => ({ default: module.FAQsPage })));
+const ContactPage = lazy(() => import('./components/pages/ContactPage').then(module => ({ default: module.ContactPage })));
+const AIChatbot = lazy(() => import('./components/AIChatbot').then(module => ({ default: module.AIChatbot })));
+
+// Loading component
+function PageLoader() {
+  return (
+    <div className="min-h-screen bg-black flex items-center justify-center">
+      <div className="flex flex-col items-center gap-4">
+        <div className="w-12 h-12 border-4 border-yellow-500 border-t-transparent rounded-full animate-spin" />
+        <p className="text-white/60 text-sm">Loading...</p>
+      </div>
     </div>
-  </div>
-);
-
-// Lazy load main pages for better performance
-const Home = lazy(() => import('./pages/Home'));
-const About = lazy(() => import('./pages/About'));
-const Services = lazy(() => import('./pages/Services'));
-const LetsTalk = lazy(() => import('./pages/LetsTalk'));
-const Blogs = lazy(() => import('./pages/Blogs'));
-const BlogPost = lazy(() => import('./components/BlogPost'));
-const Industries = lazy(() => import('./pages/Industries'));
-const Login = lazy(() => import('./pages/Login'));
-const Admin = lazy(() => import('./pages/Admin'));
-const NotFound = lazy(() => import('./pages/NotFound'));
-
-// Import ProtectedRoute component
-import ProtectedRoute from './components/ProtectedRoute';
-
-// Lazy load service pages
-const DigitalMarketing = lazy(() => import('./pages/services/DigitalMarketing'));
-const Advertising = lazy(() => import('./pages/services/Advertising'));
-const ECommerce = lazy(() => import('./pages/services/ECommerce'));
-const Branding = lazy(() => import('./pages/services/Branding'));
-const MediaProduction = lazy(() => import('./pages/services/MediaProduction'));
-const Animation = lazy(() => import('./pages/services/Animation'));
-const GraphicDesigning = lazy(() => import('./pages/services/GraphicDesigning'));
-const OOHServices = lazy(() => import('./pages/services/OOHServices'));
-const PrintMedia = lazy(() => import('./pages/services/PrintMedia'));
-const SoftwareDevelopment = lazy(() => import('./pages/services/SoftwareDevelopment'));
-const ApplicationDevelopment = lazy(() => import('./pages/services/ApplicationDevelopment'));
-const WebsiteDevelopment = lazy(() => import('./pages/services/WebsiteDevelopment'));
-const PoliticalCampaigns = lazy(() => import('./pages/services/PoliticalCampaigns'));
-const CorporateGifting = lazy(() => import('./pages/services/CorporateGifting'));
-const InfluencerMarketing = lazy(() => import('./pages/services/InfluencerMarketing'));
-const PublicRelations = lazy(() => import('./pages/services/PublicRelations'));
-
-// Lazy load industry pages
-const Healthcare = lazy(() => import('./pages/industries/Healthcare'));
-const Education = lazy(() => import('./pages/industries/Education'));
-const RealEstate = lazy(() => import('./pages/industries/RealEstate'));
-const EcommerceIndustry = lazy(() => import('./pages/industries/Ecommerce'));
-const Technology = lazy(() => import('./pages/industries/Technology'));
-const Finance = lazy(() => import('./pages/industries/Finance'));
-const Hospitality = lazy(() => import('./pages/industries/Hospitality'));
-const Automotive = lazy(() => import('./pages/industries/Automotive'));
-const Fashion = lazy(() => import('./pages/industries/Fashion'));
-const FoodBeverage = lazy(() => import('./pages/industries/FoodBeverage'));
-const Entertainment = lazy(() => import('./pages/industries/Entertainment'));
-const Sports = lazy(() => import('./pages/industries/Sports'));
-const Legal = lazy(() => import('./pages/industries/Legal'));
-const Manufacturing = lazy(() => import('./pages/industries/Manufacturing'));
-const NonProfit = lazy(() => import('./pages/industries/NonProfit'));
-const Pharmaceutical = lazy(() => import('./pages/industries/Pharmaceutical'));
-const Construction = lazy(() => import('./pages/industries/Construction'));
-const Agriculture = lazy(() => import('./pages/industries/Agriculture'));
-const Logistics = lazy(() => import('./pages/industries/Logistics'));
-const Beauty = lazy(() => import('./pages/industries/Beauty'));
+  );
+}
 
 export default function App() {
+  const [chatbotOpen, setChatbotOpen] = useState(false);
+
+  // 🔒 DEPLOYMENT SECURITY: Disable right-click, view source, copy, and selection
   useEffect(() => {
-    try {
-      // Initialize security measures (safe for iframes)
-      enforceSecureConnection();
-      preventClickjacking();
-      checkBrowserSecurity();
-    } catch (error) {
-      console.warn('Security initialization warning:', error);
-    }
-    
-    try {
-      // Initialize PWA
-      registerServiceWorker();
-      trackInstallation();
-    } catch (error) {
-      console.warn('PWA initialization warning:', error);
-    }
-    
-    try {
-      // Initialize performance optimizations
-      initPerformanceOptimizations();
-    } catch (error) {
-      console.warn('Performance optimization warning:', error);
-    }
+    // Disable right-click context menu
+    const disableRightClick = (e: MouseEvent) => {
+      e.preventDefault();
+      return false;
+    };
+
+    // Disable keyboard shortcuts
+    const disableKeyboardShortcuts = (e: KeyboardEvent) => {
+      // Disable Ctrl+U (View Source)
+      if (e.ctrlKey && e.key === 'u') {
+        e.preventDefault();
+        return false;
+      }
+      // Disable Ctrl+C (Copy)
+      if (e.ctrlKey && e.key === 'c') {
+        e.preventDefault();
+        return false;
+      }
+      // Disable Ctrl+Shift+I (DevTools)
+      if (e.ctrlKey && e.shiftKey && e.key === 'I') {
+        e.preventDefault();
+        return false;
+      }
+      // Disable Ctrl+Shift+J (Console)
+      if (e.ctrlKey && e.shiftKey && e.key === 'J') {
+        e.preventDefault();
+        return false;
+      }
+      // Disable Ctrl+Shift+C (Inspect Element)
+      if (e.ctrlKey && e.shiftKey && e.key === 'C') {
+        e.preventDefault();
+        return false;
+      }
+      // Disable F12 (DevTools)
+      if (e.key === 'F12') {
+        e.preventDefault();
+        return false;
+      }
+      // Disable Ctrl+S (Save Page)
+      if (e.ctrlKey && e.key === 's') {
+        e.preventDefault();
+        return false;
+      }
+      // Disable Ctrl+A (Select All)
+      if (e.ctrlKey && e.key === 'a') {
+        e.preventDefault();
+        return false;
+      }
+      // Disable Ctrl+P (Print)
+      if (e.ctrlKey && e.key === 'p') {
+        e.preventDefault();
+        return false;
+      }
+    };
+
+    // Disable text selection and drag
+    const disableSelection = (e: Event) => {
+      e.preventDefault();
+      return false;
+    };
+
+    // Add event listeners
+    document.addEventListener('contextmenu', disableRightClick);
+    document.addEventListener('keydown', disableKeyboardShortcuts);
+    document.addEventListener('selectstart', disableSelection);
+    document.addEventListener('dragstart', disableSelection);
+
+    // Cleanup on unmount
+    return () => {
+      document.removeEventListener('contextmenu', disableRightClick);
+      document.removeEventListener('keydown', disableKeyboardShortcuts);
+      document.removeEventListener('selectstart', disableSelection);
+      document.removeEventListener('dragstart', disableSelection);
+    };
   }, []);
 
   return (
-    <HelmetProvider>
-      <BrowserRouter>
-        <ScrollToTop />
-        <Header />
-        <FloatingCTA />
-        <BackgroundMusic />
-        <PWAInstallPrompt />
-        <Suspense fallback={<PageLoader />}>
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/about" element={<About />} />
-            <Route path="/services" element={<Services />} />
-            <Route path="/lets-talk" element={<LetsTalk />} />
-            <Route path="/blogs" element={<Blogs />} />
-            <Route path="/blog/:slug" element={<BlogPost />} />
-            <Route path="/industries" element={<Industries />} />
-            
-            {/* Authentication */}
-            <Route path="/login" element={<Login />} />
-            <Route 
-              path="/admin" 
-              element={
-                <ProtectedRoute>
-                  <Admin />
-                </ProtectedRoute>
-              } 
-            />
-            
-            {/* Service pages */}
-            <Route path="/services/digital-marketing" element={<DigitalMarketing />} />
-            <Route path="/services/advertising" element={<Advertising />} />
-            <Route path="/services/ecommerce" element={<ECommerce />} />
-            <Route path="/services/branding" element={<Branding />} />
-            <Route path="/services/media-production" element={<MediaProduction />} />
-            <Route path="/services/animation" element={<Animation />} />
-            <Route path="/services/graphic-designing" element={<GraphicDesigning />} />
-            <Route path="/services/ooh-services" element={<OOHServices />} />
-            <Route path="/services/print-media" element={<PrintMedia />} />
-            <Route path="/services/software-development" element={<SoftwareDevelopment />} />
-            <Route path="/services/application-development" element={<ApplicationDevelopment />} />
-            <Route path="/services/website-development" element={<WebsiteDevelopment />} />
-            <Route path="/services/political-campaigns" element={<PoliticalCampaigns />} />
-            <Route path="/services/corporate-gifting" element={<CorporateGifting />} />
-            <Route path="/services/influencer-marketing" element={<InfluencerMarketing />} />
-            <Route path="/services/public-relations" element={<PublicRelations />} />
-            
-            {/* Industry pages */}
-            <Route path="/industries/healthcare" element={<Healthcare />} />
-            <Route path="/industries/education" element={<Education />} />
-            <Route path="/industries/real-estate" element={<RealEstate />} />
-            <Route path="/industries/ecommerce" element={<EcommerceIndustry />} />
-            <Route path="/industries/technology" element={<Technology />} />
-            <Route path="/industries/finance" element={<Finance />} />
-            <Route path="/industries/hospitality" element={<Hospitality />} />
-            <Route path="/industries/automotive" element={<Automotive />} />
-            <Route path="/industries/fashion" element={<Fashion />} />
-            <Route path="/industries/food-beverage" element={<FoodBeverage />} />
-            <Route path="/industries/entertainment" element={<Entertainment />} />
-            <Route path="/industries/sports" element={<Sports />} />
-            <Route path="/industries/legal" element={<Legal />} />
-            <Route path="/industries/manufacturing" element={<Manufacturing />} />
-            <Route path="/industries/non-profit" element={<NonProfit />} />
-            <Route path="/industries/pharmaceutical" element={<Pharmaceutical />} />
-            <Route path="/industries/construction" element={<Construction />} />
-            <Route path="/industries/agriculture" element={<Agriculture />} />
-            <Route path="/industries/logistics" element={<Logistics />} />
-            <Route path="/industries/beauty" element={<Beauty />} />
-            
-            <Route path="/preview_page.html" element={<Home />} />
-            <Route path="/404" element={<NotFound />} />
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </Suspense>
+    <Router>
+      <div className="min-h-screen bg-black text-white flex flex-col select-none">
+        {/* Premium Animated Cursor Trail - Desktop Only */}
+        <AnimatedCursor />
+        
+        <Navigation />
+        <main className="flex-1">
+          <Suspense fallback={<PageLoader />}>
+            <Routes>
+              <Route path="/" element={<HomePage />} />
+              <Route path="/preview_page.html" element={<Navigate to="/" replace />} />
+              <Route path="/about" element={<AboutPage />} />
+              <Route path="/services" element={<ServicesPage />} />
+              <Route path="/services/:slug" element={<ServiceDetailPage />} />
+              <Route path="/industries" element={<IndustriesPage />} />
+              <Route path="/industries/:slug" element={<IndustryDetailPage />} />
+              <Route path="/blogs" element={<BlogsPage />} />
+              <Route path="/blogs/:slug" element={<BlogDetailPage />} />
+              <Route path="/faqs" element={<FAQsPage />} />
+              <Route path="/contact" element={<ContactPage />} />
+              <Route path="*" element={<Navigate to="/" replace />} />
+            </Routes>
+          </Suspense>
+        </main>
         <Footer />
-      </BrowserRouter>
-    </HelmetProvider>
+
+        {/* AI Chatbot - Lazy loaded */}
+        {chatbotOpen && (
+          <Suspense fallback={null}>
+            <AIChatbot isOpen={chatbotOpen} onClose={() => setChatbotOpen(false)} />
+          </Suspense>
+        )}
+
+        {/* Floating Chatbot Button */}
+        {!chatbotOpen && (
+          <button
+            onClick={() => setChatbotOpen(true)}
+            className="fixed bottom-6 right-6 z-[9000] bg-yellow-500 hover:bg-yellow-400 text-black p-4 rounded-full shadow-2xl transition-all duration-300 hover:scale-110 group"
+            aria-label="Open AI Chatbot"
+            style={{
+              boxShadow: '0 0 30px rgba(234, 179, 8, 0.5)',
+            }}
+          >
+            <Bot className="w-7 h-7" />
+            <span className="absolute -top-1 -right-1 w-4 h-4 bg-green-500 rounded-full border-2 border-black animate-pulse" />
+            
+            {/* Tooltip */}
+            <div className="absolute bottom-full right-0 mb-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
+              <div className="bg-white text-black text-xs font-semibold px-3 py-1.5 rounded-lg whitespace-nowrap shadow-xl">
+                Chat with us! 💬
+                <div className="absolute top-full right-4 w-0 h-0 border-l-4 border-r-4 border-t-4 border-transparent border-t-white" />
+              </div>
+            </div>
+          </button>
+        )}
+      </div>
+    </Router>
   );
 }

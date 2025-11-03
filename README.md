@@ -1,7 +1,7 @@
 
-  # Home Page Layout Design
+  # Create Dark Themed Website
 
-  This is a code bundle for Home Page Layout Design. The original project is available at https://www.figma.com/design/S8nRPrqNSavW3HkJhtI7s4/Home-Page-Layout-Design.
+  This is a code bundle for Create Dark Themed Website. The original project is available at https://www.figma.com/design/i3dV2XadyCoehw5pF0w1YR/Create-Dark-Themed-Website.
 
   ## Running the code
 
